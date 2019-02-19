@@ -1,0 +1,405 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: AS_Node BMS_Client Datalogger BMS PE_R PE_L Node_2 Node_1
+
+
+BO_ 3221225472 VECTOR__INDEPENDENT_SIG_MSG: 0 Vector__XXX
+ SG_ Accumulator_SoC : 0|16@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Acceleration_X : 0|16@1- (0.01,0) [-327.68|327.67] "m/s^2" Vector__XXX
+
+BO_ 225 AS_Torque_Req: 8 Vector__XXX
+ SG_ Torque_Set_Point_Right : 16|16@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Torque_Set_Point_Left : 0|16@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 226 AS_DL_Sensors: 8 AS_Node
+ SG_ AS_RTD : 56|8@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Steering_Position : 8|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Rack_Position : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Pressure_Service : 40|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Pressure_Regulator : 48|8@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Pressure_EBS_Line : 32|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Pressure_EBS_Act : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ AS_State : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 183 NR_DL_Sensors_4_NEW: 8 Vector__XXX
+
+BO_ 182 NR_DL_TV_out_3_NEW: 8 Vector__XXX
+
+BO_ 212 DL_AS_Status: 8 Datalogger
+ SG_ Acc_SoC : 32|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Brake_Rear : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Brake_Front : 8|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ DL_Status : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ AS_Mission : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 181 NR_DL_TV_out_2: 7 Node_2
+ SG_ TV_out_YRC_act : 48|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ TV_out_yawRate_ref : 32|16@1- (0.01,0) [0|0] "" Vector__XXX
+ SG_ TV_out_TV_R_act : 24|8@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TV_out_TV_L_act : 16|8@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TV_out_SWAng : 8|8@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TV_out_mu : 0|8@1+ (0.1,0) [0|0] "" Vector__XXX
+
+BO_ 180 NR_DL_TV_out_1: 8 Node_2
+ SG_ TV_out_velocity : 48|16@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TV_out_Mz_req : 32|16@1- (0.1,0) [0|0] "" Vector__XXX
+ SG_ TV_out_Fz_RR : 16|16@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TV_out_Fz_RL : 0|16@1- (1,0) [0|0] "" Vector__XXX
+
+BO_ 210 DL_NR_TV_Conf_2: 7 Datalogger
+ SG_ TV_TV_MODE : 40|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ TV_Switches : 48|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ TV_yrc_OS_AGR : 32|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ TV_yrc_Kbias : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ TV_tc_Kgain : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ TV_tc_deltaTH : 8|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ TV_LLTD_ayScaling : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 209 DL_NR_TV_Conf_1: 8 Datalogger
+ SG_ TV_pid_Tt_scale : 48|16@1+ (0.01,0) [0|0] "" Vector__XXX
+ SG_ TV_pid_Kd_scale : 32|16@1+ (0.01,0) [0|0] "" Vector__XXX
+ SG_ TV_pid_Kp_scale : 16|16@1+ (0.01,0) [0|0] "" Vector__XXX
+ SG_ TV_Ku_stat : 0|16@1- (1,0) [0|0] "" Vector__XXX
+
+BO_ 389 PER_PDO_1_TX: 7 PE_R
+ SG_ Torque_Estimate_Right : 8|16@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Speed_Estimate_Right : 24|16@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Errors_Right : 40|16@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Drive_engaged_Right : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 645 PER_PDO_2_TX: 8 PE_R
+ SG_ Temperature_windings_Right : 32|16@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Temperature_Inverter_Right : 48|16@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Power_estimate_Right : 16|16@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Measured_Udc_Right : 0|16@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 647 PEL_PDO_2_TX: 8 PE_L
+ SG_ Temperature_Inverter_Left : 48|16@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Temperature_windings_Left : 32|16@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Measured_Udc_Left : 16|16@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Power_estimate_Left : 0|16@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 391 PEL_PDO_1_TX: 7 PE_L
+ SG_ Errors_Left : 40|16@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Speed_Estimate_Left : 24|16@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Torque_Estimate_Left : 8|16@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Drive_engaged_Left : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 773 NR_PER_PDO_2_RX: 7 Node_2
+ SG_ Torque_Set_Point_Right : 8|16@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Speed_Limit_Right : 24|16@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Error_Reset_Right : 40|16@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Enable_Drive_Right : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 775 NR_PEL_PDO_2_RX: 7 Node_2
+ SG_ Error_Reset_Left : 40|16@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Torque_Set_Point_Left : 8|16@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Speed_Limit_Left : 24|16@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Enable_Drive_Left : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 517 NR_PER_PDO_1_RX: 7 Node_2
+ SG_ Error_Reset_Right : 40|16@1+ (1,0) [0|0] ""  PE_R
+ SG_ Torque_Set_Point_Right : 8|16@1+ (1,0) [0|0] ""  PE_R
+ SG_ Speed_Limit_Right : 24|16@1+ (1,0) [0|0] ""  PE_R
+ SG_ Enable_Drive_Right : 0|8@1+ (1,0) [0|0] ""  PE_R
+
+BO_ 241 Client_BMS_Data: 7 BMS_Client
+ SG_ BMS_Discharge_Threshold : 40|16@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS_Discharge : 32|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ BMS_Reset : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Trigger_BMS : 16|8@1+ (1,0) [0|0] ""  BMS
+ SG_ Trigger_IMD : 8|8@1+ (1,0) [0|0] ""  BMS
+ SG_ Enable_Communication : 0|8@1+ (1,0) [0|0] ""  BMS
+
+BO_ 162 BMS_Client_Cell_Temperatures: 8 BMS
+ SG_ BMS_Temparature_Payload_ID : 0|16@1+ (1,0) [0|0] "V"  BMS_Client,Datalogger
+ SG_ BMS_Temparature_Payload_3 : 48|16@1+ (1,0) [0|0] "V"  BMS_Client,Datalogger
+ SG_ BMS_Temparature_Payload_2 : 32|16@1+ (1,0) [0|0] "V"  BMS_Client,Datalogger
+ SG_ BMS_Temparature_Payload_1 : 16|16@1+ (1,0) [0|0] "V"  BMS_Client,Datalogger
+
+BO_ 163 BMS_Client_Cell_Voltages: 8 BMS
+ SG_ BMS_Voltage_Payload_ID : 0|16@1+ (1,0) [0|0] "V"  BMS_Client,Datalogger
+ SG_ BMS_Voltage_Payload_3 : 48|16@1+ (1,0) [0|0] "V"  BMS_Client,Datalogger
+ SG_ BMS_Voltage_Payload_2 : 32|16@1+ (1,0) [0|0] "V"  BMS_Client,Datalogger
+ SG_ BMS_Voltage_Payload_1 : 16|16@1+ (1,0) [0|0] "V"  BMS_Client,Datalogger
+
+BO_ 195 NF_DL_Buttons_RTD: 4 Datalogger
+ SG_ Redy_To_Drive : 24|8@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Knob_R : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Knob_L : 8|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Buttons : 0|8@1+ (1,0) [0|0] ""  Node_2
+
+BO_ 16 Datalogger_Config: 8 Datalogger
+ SG_ Config_Payload_3 : 40|16@1- (1,0) [0|0] ""  Node_2,Node_1
+ SG_ Config_Payload_2 : 24|16@1- (1,0) [0|0] ""  Node_2,Node_1
+ SG_ Config_Payload_1 : 8|16@1- (1,0) [0|0] ""  Node_2,Node_1
+ SG_ Config_ID : 0|8@1+ (1,0) [0|0] ""  Node_2,Node_1
+
+BO_ 175 BMS_DL_Hartbeat: 8 BMS
+ SG_ BMS_Status : 0|16@1+ (1,0) [0|0] ""  Datalogger
+
+BO_ 191 NR_DL_Hartbeat: 1 Node_2
+ SG_ Node_2_Status : 0|8@1+ (1,0) [0|0] ""  Datalogger
+
+BO_ 207 NF_DL_Hartbeat: 1 Node_1
+ SG_ Node_1_Status : 0|8@1+ (1,0) [0|0] ""  Datalogger
+
+BO_ 161 BMS_DL_Data: 8 BMS
+ SG_ Accumulator_SoC : 32|16@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Accumulator_Voltage : 16|16@1+ (1,0) [0|65535] "V"  Datalogger
+ SG_ Accumulator_Temp : 48|16@1+ (1,0) [0|65535] "oC"  Datalogger
+ SG_ Accumulator_Current : 0|16@1+ (1,0) [0|65535] "A"  Datalogger
+
+BO_ 519 NR_PEL_PDO_1_RX: 7 Node_2
+ SG_ Torque_Set_Point_Left : 8|16@1+ (1,0) [0|0] ""  PE_L
+ SG_ Speed_Limit_Left : 24|16@1+ (1,0) [0|0] ""  PE_L
+ SG_ Error_Reset_Left : 40|16@1+ (1,0) [0|0] ""  PE_L
+ SG_ Enable_Drive_Left : 0|8@1+ (1,0) [0|0] ""  PE_L
+
+BO_ 179 NR_DL_Sensors_3: 7 Node_2
+ SG_ Water_Temp_3 : 48|8@1+ (1,0) [0|200] "oC" Vector__XXX
+ SG_ Water_Temp_2 : 40|8@1+ (1,0) [0|200] "oC" Vector__XXX
+ SG_ Water_Temp_1 : 32|8@1+ (1,0) [0|200] "oC" Vector__XXX
+ SG_ Acceleration_Y : 16|16@1- (0.01,0) [-327.68|327.67] "m/s^2"  Datalogger
+ SG_ Acceleration_X : 0|16@1- (0.01,0) [-327.68|327.67] "m/s^2"  Datalogger
+
+BO_ 178 NR_DL_Sensors_2: 8 Node_2
+ SG_ Yaw : 48|16@1- (1,0) [0|0] "m/s^2" Vector__XXX
+ SG_ GearBox_Temp_R : 40|8@1+ (1,0) [0|200] "0C" Vector__XXX
+ SG_ Rotor_Object_Temp_R : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Rotor_Object_Temp_L : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Rotor_Ambient_Temp_R : 8|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Rotor_Ambient_Temp_L : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ GearBox_Temp_L : 32|8@1+ (1,0) [0|200] "0C"  Datalogger
+
+BO_ 177 NR_DL_Sensors_1: 8 Node_2
+ SG_ Wheel_Speed_RR : 48|16@1+ (0.1,0) [0|6553.5] "Km/h"  Datalogger
+ SG_ Wheel_Speed_RL : 32|16@1+ (0.1,0) [0|6553.5] "Km/h"  Datalogger
+ SG_ Damper_RR : 16|16@1+ (1,0) [0|6000] "mm"  Datalogger
+ SG_ Damper_RL : 0|16@1+ (1,0) [0|6000] "mm"  Datalogger
+
+BO_ 193 NF_NR_Sensors_1: 5 Node_1
+ SG_ Throttle : 32|8@1+ (1,0) [0|100] "%"  Node_2,Datalogger
+ SG_ Steering_Angle : 24|8@1- (1,0) [-120|120] "o"  Node_2,Datalogger
+ SG_ Brake : 16|8@1+ (1,0) [0|100] "%"  Node_2,Datalogger
+ SG_ Disk_Temp_FR : 8|8@1+ (1,0) [0|255] "0C"  Datalogger
+ SG_ Disk_Temp_FL : 0|8@1+ (1,0) [0|255] "0C"  Datalogger
+
+BO_ 194 NF_NR_Sensors_2: 8 Node_1
+ SG_ Damper_FR : 48|16@1+ (1,0) [0|6000] "mm"  Node_2,Datalogger
+ SG_ Damper_FL : 32|16@1+ (1,0) [0|6000] "mm"  Node_2,Datalogger
+ SG_ Wheel_Speed_FR : 16|16@1+ (0.1,0) [0|6553.5] "Km/h"  Node_2,Datalogger
+ SG_ Wheel_Speed_FL : 0|16@1+ (0.1,0) [0|6553.5] "Km/h"  Node_2,Datalogger
+
+
+
+CM_ BO_ 3221225472 "This is a message for not used signals, created by Vector CANdb++ DBC OLE DB Provider.";
+CM_ BO_ 389 "Torque demad to PE (Node2-PE & Logg)";
+CM_ BO_ 645 "Torque demad to PE (Node2-PE & Logg)";
+CM_ BO_ 647 "Torque demad to PE (Node2-PE & Logg)";
+CM_ BO_ 391 "Torque demad to PE (Node2-PE & Logg)";
+CM_ BO_ 773 "Torque demad to PE (Node2-PE & Logg)";
+CM_ BO_ 775 "Torque demad to PE (Node2-PE & Logg)";
+CM_ BO_ 517 "Torque demad to PE (Node2-PE & Logg)";
+CM_ BO_ 195 "Button presses (Datalogger-Node2
+)";
+CM_ BO_ 16 "Configuration (Datalogger- Node12)";
+CM_ BO_ 175 "Status of AMS";
+CM_ BO_ 191 "Status of Node2";
+CM_ BO_ 207 "Status of Node1";
+CM_ BO_ 161 "Current, Voltage, Temp (PE-Logg)";
+CM_ BO_ 519 "Torque demad to PE (Node2-PE & Logg)";
+CM_ BO_ 179 "Acceleration, gyro (Node2-Logg)";
+CM_ BO_ 178 "Disk temp, Water temp, oil temp (Node2-Logg)";
+CM_ BO_ 177 "Wheel speed, damper travel (Node2-Logg)";
+CM_ BO_ 193 "Throttle, Brake, Stearing, Braketemp (Node1-Node2 & Logg)
+
+";
+CM_ BO_ 194 "Wheel speed, damper travel (Node1-Node2 & Losgg)";
+BA_DEF_ EV_  "GenEnvControlType" ENUM  "NoControl","SliderHoriz","SliderVert","PushButton","Edit","BitmapSwitch";
+BA_DEF_ EV_  "GenEnvIsGeneratedSnd" ENUM  "No","Yes";
+BA_DEF_ EV_  "GenEnvAutoGenCtrl" ENUM  "No","Yes";
+BA_DEF_ EV_  "GenEnvMsgOffset" INT 0 2147483647;
+BA_DEF_ EV_  "GenEnvMsgName" STRING ;
+BA_DEF_ EV_  "GenEnvIsGeneratedDsp" ENUM  "No","Yes";
+BA_DEF_ SG_  "NWM-WakeupAllowed" ENUM  "No","Yes";
+BA_DEF_ SG_  "GenSigAltSetting" STRING ;
+BA_DEF_ SG_  "GenSigPostIfSetting" STRING ;
+BA_DEF_ SG_  "GenSigPreIfSetting" STRING ;
+BA_DEF_ SG_  "GenSigConditionalSend" STRING ;
+BA_DEF_ SG_  "GenSigAssignSetting" STRING ;
+BA_DEF_ SG_  "GenSigPostSetting" STRING ;
+BA_DEF_ SG_  "GenSigPreSetting" STRING ;
+BA_DEF_ SG_  "GenSigReceiveSetting" STRING ;
+BA_DEF_ SG_  "GenSigAutoGenDsp" ENUM  "No","Yes";
+BA_DEF_ SG_  "GenSigInactiveValue" INT 0 100000;
+BA_DEF_ SG_  "GenSigAutoGenSnd" ENUM  "No","Yes";
+BA_DEF_ SG_  "GenSigSendType" ENUM  "Cyclic","OnWrite","OnWriteWithRepetition","OnChange","OnChangeWithRepetition","IfActive","IfActiveWithRepetition";
+BA_DEF_ SG_  "GenSigStartValue" FLOAT -100000000000 100000000000;
+BA_DEF_ SG_  "GenSigEnvVarType" ENUM  "int","float","undef";
+BA_DEF_ SG_  "GenSigEVName" STRING ;
+BA_DEF_ BO_  "GenMsgStartDelayTime" INT 0 100000;
+BA_DEF_ BO_  "GenMsgFastOnStart" INT 0 100000;
+BA_DEF_ BO_  "GenMsgILSupport" ENUM  "No","Yes";
+BA_DEF_ BO_  "GenMsgCycleTimeFast" INT 2 50000;
+BA_DEF_ BO_  "GenMsgNrOfRepetition" INT 0 999999;
+BA_DEF_ BO_  "GenMsgAltSetting" STRING ;
+BA_DEF_ BO_  "GenMsgPostIfSetting" STRING ;
+BA_DEF_ BO_  "GenMsgPreIfSetting" STRING ;
+BA_DEF_ BO_  "GenMsgConditionalSend" STRING ;
+BA_DEF_ BO_  "GenMsgPostSetting" STRING ;
+BA_DEF_ BO_  "GenMsgPreSetting" STRING ;
+BA_DEF_ BO_  "GenMsgEVName" STRING ;
+BA_DEF_ BO_  "GenMsgAutoGenDsp" ENUM  "No","Yes";
+BA_DEF_ BO_  "GenMsgAutoGenSnd" ENUM  "No","Yes";
+BA_DEF_ BO_  "GenMsgDelayTime" INT 1 1000;
+BA_DEF_ BO_  "DiagRequest" ENUM  "no","yes";
+BA_DEF_ BO_  "DiagResponse" ENUM  "no","yes";
+BA_DEF_ BO_  "NmMessage" ENUM  "no","yes";
+BA_DEF_ BU_  "TpAddressingMode" INT 0 3;
+BA_DEF_ BU_  "ILUsed" ENUM  "Yes","No";
+BA_DEF_ BU_  "GenNodAutoGenDsp" ENUM  "No","Yes";
+BA_DEF_ BU_  "GenNodAutoGenSnd" ENUM  "No","Yes";
+BA_DEF_ BU_  "GenNodSleepTime" INT 0 1000000;
+BA_DEF_ BU_  "NmNode" ENUM  "no","yes";
+BA_DEF_ BU_  "NmStationAddress" INT 0 63;
+BA_DEF_ BU_  "TpNodeBaseAddress" HEX 0 33554431;
+BA_DEF_ BU_  "TpUseFC" INT 0 1;
+BA_DEF_ BU_  "TpCanBus" INT 0 2;
+BA_DEF_ BU_  "TpRxMask" HEX 0 255;
+BA_DEF_ BU_  "Diagnose-Stationsadresse" HEX 0 255;
+BA_DEF_ BU_  "TpRxIdentifier" HEX 1536 1791;
+BA_DEF_ BU_  "TpTxIdentifier" HEX 1536 1791;
+BA_DEF_  "NmBaseAddress" HEX 1280 1311;
+BA_DEF_  "GenNWMApCanOff" STRING ;
+BA_DEF_  "GenNWMApCanOn" STRING ;
+BA_DEF_  "GenNWMApCanSleep" STRING ;
+BA_DEF_  "GenNWMGotoMode_Awake" STRING ;
+BA_DEF_  "GenNWMGotoMode_BusSleep" STRING ;
+BA_DEF_  "GenNWMSleepTime" INT 0 1000000;
+BA_DEF_  "GenNWMTalkNM" STRING ;
+BA_DEF_  "GenEnvVarPrefix" STRING ;
+BA_DEF_  "GenEnvVarEndingSnd" STRING ;
+BA_DEF_  "GenEnvVarEndingDsp" STRING ;
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "Cyclic","not_used","not_used","not_used","not_used","Cyclic","not_used","IfActive";
+BA_DEF_ BO_  "GenMsgCycleTime" INT 2 2000;
+BA_DEF_  "BusType" STRING ;
+BA_DEF_ BU_  "NodeLayerModules" STRING ;
+BA_DEF_ BU_  "ECU" STRING ;
+BA_DEF_ BU_  "CANoeJitterMax" INT 0 0;
+BA_DEF_ BU_  "CANoeJitterMin" INT 0 0;
+BA_DEF_ BU_  "CANoeDrift" INT 0 0;
+BA_DEF_ BU_  "CANoeStartDelay" INT 0 0;
+BA_DEF_DEF_  "GenEnvControlType" "";
+BA_DEF_DEF_  "GenEnvIsGeneratedSnd" "No";
+BA_DEF_DEF_  "GenEnvAutoGenCtrl" "No";
+BA_DEF_DEF_  "GenEnvMsgOffset" 0;
+BA_DEF_DEF_  "GenEnvMsgName" "";
+BA_DEF_DEF_  "GenEnvIsGeneratedDsp" "No";
+BA_DEF_DEF_  "NWM-WakeupAllowed" "";
+BA_DEF_DEF_  "GenSigAltSetting" "";
+BA_DEF_DEF_  "GenSigPostIfSetting" "";
+BA_DEF_DEF_  "GenSigPreIfSetting" "";
+BA_DEF_DEF_  "GenSigConditionalSend" "";
+BA_DEF_DEF_  "GenSigAssignSetting" "";
+BA_DEF_DEF_  "GenSigPostSetting" "";
+BA_DEF_DEF_  "GenSigPreSetting" "";
+BA_DEF_DEF_  "GenSigReceiveSetting" "";
+BA_DEF_DEF_  "GenSigAutoGenDsp" "";
+BA_DEF_DEF_  "GenSigInactiveValue" 0;
+BA_DEF_DEF_  "GenSigAutoGenSnd" "";
+BA_DEF_DEF_  "GenSigSendType" "Cyclic";
+BA_DEF_DEF_  "GenSigStartValue" 0;
+BA_DEF_DEF_  "GenSigEnvVarType" "undef";
+BA_DEF_DEF_  "GenSigEVName" "";
+BA_DEF_DEF_  "GenMsgStartDelayTime" 0;
+BA_DEF_DEF_  "GenMsgFastOnStart" 0;
+BA_DEF_DEF_  "GenMsgILSupport" "Yes";
+BA_DEF_DEF_  "GenMsgCycleTimeFast" 5;
+BA_DEF_DEF_  "GenMsgNrOfRepetition" 0;
+BA_DEF_DEF_  "GenMsgAltSetting" "";
+BA_DEF_DEF_  "GenMsgPostIfSetting" "";
+BA_DEF_DEF_  "GenMsgPreIfSetting" "";
+BA_DEF_DEF_  "GenMsgConditionalSend" "";
+BA_DEF_DEF_  "GenMsgPostSetting" "";
+BA_DEF_DEF_  "GenMsgPreSetting" "";
+BA_DEF_DEF_  "GenMsgEVName" "";
+BA_DEF_DEF_  "GenMsgAutoGenDsp" "";
+BA_DEF_DEF_  "GenMsgAutoGenSnd" "";
+BA_DEF_DEF_  "GenMsgDelayTime" 1;
+BA_DEF_DEF_  "DiagRequest" "no";
+BA_DEF_DEF_  "DiagResponse" "no";
+BA_DEF_DEF_  "NmMessage" "no";
+BA_DEF_DEF_  "TpAddressingMode" 0;
+BA_DEF_DEF_  "ILUsed" "Yes";
+BA_DEF_DEF_  "GenNodAutoGenDsp" "";
+BA_DEF_DEF_  "GenNodAutoGenSnd" "";
+BA_DEF_DEF_  "GenNodSleepTime" 0;
+BA_DEF_DEF_  "NmNode" "no";
+BA_DEF_DEF_  "NmStationAddress" 0;
+BA_DEF_DEF_  "TpNodeBaseAddress" 1536;
+BA_DEF_DEF_  "TpUseFC" 1;
+BA_DEF_DEF_  "TpCanBus" 1;
+BA_DEF_DEF_  "TpRxMask" 255;
+BA_DEF_DEF_  "Diagnose-Stationsadresse" 0;
+BA_DEF_DEF_  "TpRxIdentifier" 1536;
+BA_DEF_DEF_  "TpTxIdentifier" 1536;
+BA_DEF_DEF_  "NmBaseAddress" 1280;
+BA_DEF_DEF_  "GenNWMApCanOff" "apCanOff()";
+BA_DEF_DEF_  "GenNWMApCanOn" "apCanOn()";
+BA_DEF_DEF_  "GenNWMApCanSleep" "apCanSleep()";
+BA_DEF_DEF_  "GenNWMGotoMode_Awake" "GotoMode_Awake()";
+BA_DEF_DEF_  "GenNWMGotoMode_BusSleep" "GotoMode_BusSleep()";
+BA_DEF_DEF_  "GenNWMSleepTime" 0;
+BA_DEF_DEF_  "GenNWMTalkNM" "TalkNM()";
+BA_DEF_DEF_  "GenEnvVarPrefix" "Env";
+BA_DEF_DEF_  "GenEnvVarEndingSnd" "_";
+BA_DEF_DEF_  "GenEnvVarEndingDsp" "Dsp_";
+BA_DEF_DEF_  "GenMsgSendType" "Cyclic";
+BA_DEF_DEF_  "GenMsgCycleTime" 10;
+BA_DEF_DEF_  "BusType" "";
+BA_DEF_DEF_  "NodeLayerModules" "";
+BA_DEF_DEF_  "ECU" "";
+BA_DEF_DEF_  "CANoeJitterMax" 0;
+BA_DEF_DEF_  "CANoeJitterMin" 0;
+BA_DEF_DEF_  "CANoeDrift" 0;
+BA_DEF_DEF_  "CANoeStartDelay" 0;
+BA_ "BusType" "CAN";
+BA_ "GenMsgSendType" BO_ 16 1;
+BA_ "GenMsgCycleTime" BO_ 175 500;
+BA_ "GenMsgCycleTime" BO_ 191 500;
+BA_ "GenMsgCycleTime" BO_ 207 500;
+

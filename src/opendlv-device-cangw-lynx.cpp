@@ -141,7 +141,7 @@ int32_t main(int32_t argc, char **argv) {
         std::cerr << "failed (SocketCAN not available on this platform). " << std::endl;
         return retCode;
 #endif
-
+/*
         // Delegate for handling incoming opendlv.proxy.ActuationRequest.
         auto onActuationRequest = [&socketCAN, ENABLED_ACTUATION_BRAKE, ENABLED_ACTUATION_THROTTLE, ENABLED_ACTUATION_STEERING](cluon::data::Envelope &&env){
             opendlv::proxy::ActuationRequest ar = cluon::extractMessage<opendlv::proxy::ActuationRequest>(std::move(env));
@@ -260,7 +260,7 @@ int32_t main(int32_t argc, char **argv) {
 
         // Register our lambda for the message identifier for opendlv::proxy::lynx::AccelerationRequest.
         od4.dataTrigger(opendlv::proxy::ActuationRequest::ID(), onActuationRequest);
-
+*/
         struct can_frame frame;
         fd_set rfds;
         struct timeval timeout;

@@ -5,7 +5,7 @@ branches:
   only:
   - "/^master$/"
   - "/^pre-release$/"
-  - "/^v.*$/"  # tag (or release version)
+  - "/^v.*$/"
 services:
 - docker
 addons:
@@ -17,13 +17,14 @@ env:
   - TAG=${TRAVIS_TAG}
   - DOCKERHUB='chalmersfsd'
   - IMAGE=`echo ${TRAVIS_REPO_SLUG#*/}`
-  - secure: dushg6DuEGVeKO0UusWz+I48HZ2xYhIIjsU0EyymZhwfj/HH7gMP1C6moJcE8CMpWqk/Zh7z5gHrWi/SBwJ7HobO5OMxVsWBNS4dewOdQmNmp/nU6TxYX7iYCVRpTMDfnahe1nDo5SPj9kgunDBiX/EzSHvN3keeLfhKcgcUwttWjfys/bEJK7q7VvGSTcesYG1I9RVlOD4K7D+P8HpXTaADtxS76Z9m6hrzGOafcihAVqRGsN719959lZYgRKP7lZKM3cwNJhbkC1DaITSMGOcHO9Y2ioha0il/2ixzsIiwYROKjE8R5VvATT1DIScEZktti+8ti0XDglHFfo0wbAkevYVyGMoFs4ve4RO21pYOo6qZXRyuowavAyeOKFSYNSwUVYGzTacRz4LHPZrsuDpa8beZnnOG1hn6NiYTM/PudGAOHSUXBsFncCtLvUfNZC0po9YV+ezos5c9odxk742qvrFTRXpTIcPDxffGt1RQdBTMaM+oGwkieny1bHRVy3wtLz7etxEldPwYDwSZ74Kfpo8fI3/RUGaCWnLGLzusc7cxZIZRXfOIw8+yTSNlDucivv8hgwIRYzp7jLhQqNyASqghzXu0p+cu/UdOJ4JKY508n4WhAerYBCxJ7HfGHgsBunc/fNRqpdLqVgAOBSAs/itVwxWjqi9wdV/w5jM=
-  - secure: k20YXw5VQTu8sVaqe4PH0CGJN+5EyKhaLnSH+Pe37Mq6iuDC8koUSKzi2zZqIIC4Fphhf6tt/Wqat4abmw7FPU7LpC5zVLKbXgM1c8uGm5Zt7mn4LJrg9Z1g97CnBa1BGsRV3EYNo6yi8RMaqbyMQwOZbTi5iaqtMWlhivoIPqIwSgr77SUu34BhnyssTF32ArSZMyLxhHUyjRvyq5I1XNTIgBs0t1J4uMTSgCR8XFOVoFDC9iC+9t4lP0bDP5h9vsTeysRk+EEwb6EGX8gVCbPHn+aS2Ne0ExAXPjteOGR0npemcr+H363mfrSE2XtKhwyz2qI8WbGhRSMRh9LvB/8mJ/QjYSjtGYsSCc7/Bgy0ZaqmCjgog6+LcVRNeJU2mPQHz4Z1Q1OVxzqyVSblQnbtMU/Ov5QHtLrX4DSP/rgut8Mii423YwOAYx+rEc7u0tRXRGYkI8rAZmMVQQ+xJHZAKVHo2JzeX7GvUd6SCdIBNX2U6chbScRIwXLLA0N4kadGk4kc0LKon+qDeFqrewPNnGB7s6nqK0HrcUs12OHEgi1hkfp8GcxT2+eQq+OwSyf05WBohb/Io2E6KEVbVs4G9o/Wlf+0BPOxorIOwQbnd3XU2xK8CqmHPfTJaKPwcLP+tzf/bfB0kuxvoL0ejMQqvr3qMILq3/7penyr+jQ=
+  - secure: cAvfI4Z8obUg28gWU2b6GxgB8OhlrFAfyW60YSGtnX0vA3b1QFb3ZyBQtujDfBDmOUta50JrBgQHjqEFmw3F89oLiHF3D7uTu2XNZVVvJZmlhb+5jymjzGnSi/k6kp633ZN/h6rECs+kGVMAoY5jeq/NNqcT0J6GtGE5LYMrGRzLNMIKGgE31YkgWLIsDzs5qkBzIoO1OMzS31v6k3uUfBK3MOVwjFxA1BBP1YpscIFU3Y+28biRcin6WnQe7zD3VgAILKXOpSCzyYIzIxqt9gtSxfz/19n8zskjvlovClDvoXHB98Fl16eFgi70QzTfJOUOVEw3ecWVU/34RLTgcgniGNJLpeHOq+/+SRyRtUrZ6is7Hk7aBFxyzJgHjn4G4cIIO13QmYEDDTTtvKIQWsp6b2hADtbyCdfIKhc9kTo+LligE3cGE9x5/OQjv4Fu7BllRcSrlfUco0RkkLiesVcPm3dOdvSQAVbRfM7hMI8nQA16YWwf+fUxDFQjnwSp9VC+fhC6OmGkuUj4w2IUac7Q45lMgWB69x926sS1Xg7Hmm43yZlp159B82h6PY1BfUtBUoLW8g6DvggPjKLN067zM0OWatYW/svidqNY7xtKL9OJyiXh5ZTrOTONW80zziNp5M/yDdgekpslNGEw28IMZR1NChNfvv4XDddZyd8=
+  - secure: TI1/rfpcdPsR9JvQAaLrTq8tEIhgULMDPn140TSV7ZDxhV6bYkXn3shJOem4XLIwikFtKe7Gb2tXH6abdNx5OjXDGAa92obRmhhufzFIUdXhbW0HFvaWUQgTonoZScrLwPWAg7wC/YR9Hpo6acwixJq7QV6hAQbKo5QDBreAbRqpGSDSPJYb5gMS11DZ+Loc7JpMsmhrsSYadNuGBZcjfRV2RLD9ZvXjuBHZ8c5VpR2+o+lEC/qaGkqYxSImQQlKYbp8eBWXRTGIiXxqXi2aPUbyvzKKDAXM3S6tT/Va2rsZwZfT0KbP8k/W/oZg23mRL33IQmqKfTBotzy1DD2R56Kc+v3male5LK7+DGab8XYmjJBLLShtrpipZ7pm5vnppFoH9XwBPfamnyFloqTowpyM4hFmqjH+c6dOoFWSHBMPB0hKqjTdVYS6scnWDZwsWUe4HptmeFuLzUWyS7fVwG3ZABJ6eDRLKjEAni/AYU9AoyHsDeQXkCwoIG3cUmURtkonHZS519qWOZQkQ7l78dkY5KJj0v2r+Ja8O9eUMr62aGapszoDAMUE1dqSBCViZGZ8IwP0F1UCxfjkrW2D5vAsYSbhbDO90S4B5GU877NK5RA2CSd7npod6hN13luAYIOkhM/wpawn6gN5VUW2mvJ+elpZUAagkSDHwr+AiZA=
 install:
 - docker build -f Dockerfile.amd64 -t ${IMAGE}:${BRANCH} .
 script: skip
 after_success:
-- if [[ -z "${TAG}" ]]; then echo "This commit hasn't been tagged, will not be pushed to dockerhub"; exit 0; fi
+- if [[ -z "${TAG}" ]]; then echo "This commit hasn't been tagged, will not be pushed
+  to dockerhub"; exit 0; fi
 - docker --version
 - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
 - docker tag ${IMAGE}:${BRANCH} ${DOCKERHUB}/${IMAGE}:${TAG}

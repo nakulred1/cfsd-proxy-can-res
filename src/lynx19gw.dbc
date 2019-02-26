@@ -58,7 +58,7 @@ BO_ 183 NR_DL_Sensors_4_NEW: 8 Vector__XXX
 
 BO_ 182 NR_DL_TV_out_3_NEW: 8 Vector__XXX
 
-BO_ 212 DL_AS_Status: 8 Datalogger
+BO_ 212 DL_AS_Status: 5 Datalogger
  SG_ Acc_SoC : 32|8@1+ (1,0) [0|0] "" Vector__XXX
  SG_ Brake_Rear : 16|8@1+ (1,0) [0|0] "" Vector__XXX
  SG_ Brake_Front : 8|8@1+ (1,0) [0|0] "" Vector__XXX
@@ -211,12 +211,12 @@ BO_ 177 NR_DL_Sensors_1: 8 Node_2
  SG_ Damper_RR : 16|16@1+ (1,0) [0|6000] "mm"  Datalogger
  SG_ Damper_RL : 0|16@1+ (1,0) [0|6000] "mm"  Datalogger
 
-BO_ 193 NF_NR_Sensors_1: 5 Node_1
- SG_ Throttle : 32|8@1+ (1,0) [0|100] "%"  Node_2,Datalogger
- SG_ Steering_Angle : 24|8@1- (1,0) [-120|120] "o"  Node_2,Datalogger
- SG_ Brake : 16|8@1+ (1,0) [0|100] "%"  Node_2,Datalogger
- SG_ Disk_Temp_FR : 8|8@1+ (1,0) [0|255] "0C"  Datalogger
- SG_ Disk_Temp_FL : 0|8@1+ (1,0) [0|255] "0C"  Datalogger
+BO_ 193 NF_NR_Sensors_1: 7 Node_1
+ SG_ Throttle : 48|8@1+ (1,0) [0|100] "%"  Node_2,Datalogger
+ SG_ Steering_Angle : 32|8@1- (1,0) [-120|120] "o"  Node_2,Datalogger
+ SG_ Brake : 40|8@1+ (1,0) [0|100] "%"  Node_2,Datalogger
+ SG_ Disk_Temp_FR : 16|16@1+ (1,0) [0|255] "0C"  Datalogger
+ SG_ Disk_Temp_FL : 0|16@1+ (1,0) [0|255] "0C"  Datalogger
 
 BO_ 194 NF_NR_Sensors_2: 8 Node_1
  SG_ Damper_FR : 48|16@1+ (1,0) [0|6000] "mm"  Node_2,Datalogger

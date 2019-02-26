@@ -65,11 +65,30 @@ int32_t main(int32_t argc, char **argv) {
         auto decode = [&od4, VERBOSE, ID](cluon::data::TimeStamp ts, uint16_t canFrameID, uint8_t *src, uint8_t len) {
             if ( (nullptr == src) || (0 == len) ) return;
 
+
             if (LYNX19GW_DL_AS_STATUS_FRAME_ID == canFrameID) {
                 lynx19gw_dl_as_status_t tmp;
                 if (0 == lynx19gw_dl_as_status_unpack(&tmp, src, len)) {
                     opendlv::proxy::AsStatus msg;
                     msg.asMission(lynx19gw_dl_as_status_as_mission_decode(tmp.as_mission));
+                    msg.brakeFront(lynx19gw_dl_as_status_brake_front_decode(tmp.brake_front));
+                    msg.brakeRear(lynx19gw_dl_as_status_brake_rear_decode(tmp.brake_rear));
+                    // The following block is automatically added to demonstrate how to display the received values.
+                    {
+                        std::stringstream sstr;
+                        msg.accept([](uint32_t, const std::string &, const std::string &) {},
+                                [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
+                                []() {});
+                        std::cout << sstr.str() << std::endl;
+                    }
+                }
+            }
+            if (LYNX19GW_NF_NR_SENSORS_1_FRAME_ID == canFrameID) {
+                lynx19gw_nf_nr_sensors_1_t tmp;
+                if (0 == lynx19gw_nf_nr_sensors_1_unpack(&tmp, src, len)) {
+                    opendlv::proxy::vehicleState msg;
+                    msg.brakeRatio(lynx19gw_nf_nr_sensors_1_brake_decode(tmp.brake));
+                    msg.torqueRatio(lynx19gw_nf_nr_sensors_1_throttle_decode(tmp.throttle));
                     // The following block is automatically added to demonstrate how to display the received values.
                     {
                         std::stringstream sstr;
@@ -81,11 +100,12 @@ int32_t main(int32_t argc, char **argv) {
                 }
             }
             
-            if (LYNX19GW_NF_NR_SENSORS_1_FRAME_ID == canFrameID) {
-                lynx19gw_nf_nr_sensors_1_t tmp;
-                if (0 == lynx19gw_nf_nr_sensors_1_unpack(&tmp, src, len)) {
-                    opendlv::proxy::TorqueReading msg;
-                    msg.torque(lynx19gw_nf_nr_sensors_1_throttle_decode(tmp.throttle));
+            if (LYNX19GW_NR_DL_SENSORS_1_FRAME_ID == canFrameID) {
+                lynx19gw_nr_dl_sensors_1_t tmp;
+                if (0 == lynx19gw_nr_dl_sensors_1_unpack(&tmp, src, len)) {
+                    opendlv::proxy::WheelSpeedRareReading msg;
+                    msg.wheelRL(lynx19gw_nr_dl_sensors_1_wheel_speed_rl_decode(tmp.wheel_speed_rl));
+                    msg.wheelRR(lynx19gw_nr_dl_sensors_1_wheel_speed_rr_decode(tmp.wheel_speed_rr));
                     // The following block is automatically added to demonstrate how to display the received values.
                     {
                         std::stringstream sstr;
@@ -96,6 +116,25 @@ int32_t main(int32_t argc, char **argv) {
                     }
                 }
             }
+
+            if (LYNX19GW_NF_NR_SENSORS_2_FRAME_ID == canFrameID) {
+                lynx19gw_nf_nr_sensors_2_t tmp;
+                if (0 == lynx19gw_nf_nr_sensors_2_unpack(&tmp, src, len)) {
+                    opendlv::proxy::WheelSpeedFrontReading msg;
+                    msg.wheelFL(lynx19gw_nf_nr_sensors_2_wheel_speed_fl_decode(tmp.wheel_speed_fl));
+                    msg.wheelFR(lynx19gw_nf_nr_sensors_2_wheel_speed_fr_decode(tmp.wheel_speed_fr));
+                    // The following block is automatically added to demonstrate how to display the received values.
+                    {
+                        std::stringstream sstr;
+                        msg.accept([](uint32_t, const std::string &, const std::string &) {},
+                                [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
+                                []() {});
+                        std::cout << sstr.str() << std::endl;
+                    }
+                }
+            }
+
+
             
         };
 

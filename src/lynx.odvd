@@ -19,8 +19,22 @@
 // Legacy message to control Rhino.
 message opendlv.proxy.AsStatus [id = 2001]{
   int asMission [id = 1];
+  int brakeFront [id = 2];
+  int brakeRear [id = 3];
 }
 
-message opendlv.proxy.TorqueReading [id = 2002]{
-  float torque [id = 1];
+message opendlv.proxy.WheelSpeedRareReading [id = 2002]{
+  int wheelRL [id = 1];
+  int wheelRR [id = 2];
 }
+
+message opendlv.proxy.WheelSpeedFrontReading [id = 2003]{
+  int wheelFL [id = 1];
+  int wheelFR [id = 2];
+}
+
+message opendlv.proxy.vehicleState [id = 2005]{
+  int brakeRatio [id = 1];
+  int torqueRatio [id = 2];
+}
+

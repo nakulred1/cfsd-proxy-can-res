@@ -1,5 +1,5 @@
-lynx19gw_as_torque_req_t.torque_set_point_left:
-lynx19gw_as_torque_req_t.torque_set_point_right:
+lynx19gw_as_torque_req_t.torque_set_point_left:opendlv.proxy.TorqueRequestSetPoint.torqueLeft
+lynx19gw_as_torque_req_t.torque_set_point_right:opendlv.proxy.TorqueRequestSetPoint.torqueRight
 lynx19gw_as_dl_sensors_t.as_state:
 lynx19gw_as_dl_sensors_t.steering_position:
 lynx19gw_as_dl_sensors_t.rack_position:
@@ -115,9 +115,9 @@ lynx19gw_nr_dl_sensors_1_t.wheel_speed_rl:opendlv.proxy.WheelSpeedRareReading.wh
 lynx19gw_nr_dl_sensors_1_t.wheel_speed_rr:opendlv.proxy.WheelSpeedRareReading.wheelRR
 lynx19gw_nf_nr_sensors_1_t.disk_temp_fl:
 lynx19gw_nf_nr_sensors_1_t.disk_temp_fr:
-lynx19gw_nf_nr_sensors_1_t.brake:opendlv.proxy.vehicleState.brakeRatio
+lynx19gw_nf_nr_sensors_1_t.brake:opendlv.proxy.VehicleState.brakeRatio
 lynx19gw_nf_nr_sensors_1_t.steering_angle:
-lynx19gw_nf_nr_sensors_1_t.throttle:opendlv.proxy.vehicleState.torqueRatio
+lynx19gw_nf_nr_sensors_1_t.throttle:opendlv.proxy.VehicleState.torqueRatio
 lynx19gw_nf_nr_sensors_2_t.wheel_speed_fl:opendlv.proxy.WheelSpeedFrontReading.wheelFL
 lynx19gw_nf_nr_sensors_2_t.wheel_speed_fr:opendlv.proxy.WheelSpeedFrontReading.wheelFR
 lynx19gw_nf_nr_sensors_2_t.damper_fl:

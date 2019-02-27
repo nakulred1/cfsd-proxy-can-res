@@ -86,7 +86,7 @@ int32_t main(int32_t argc, char **argv) {
             if (LYNX19GW_NF_NR_SENSORS_1_FRAME_ID == canFrameID) {
                 lynx19gw_nf_nr_sensors_1_t tmp;
                 if (0 == lynx19gw_nf_nr_sensors_1_unpack(&tmp, src, len)) {
-                    opendlv::proxy::vehicleState msg;
+                    opendlv::proxy::VehicleState msg;
                     msg.brakeRatio(lynx19gw_nf_nr_sensors_1_brake_decode(tmp.brake));
                     msg.torqueRatio(lynx19gw_nf_nr_sensors_1_throttle_decode(tmp.throttle));
                     // The following block is automatically added to demonstrate how to display the received values.
@@ -180,6 +180,36 @@ int32_t main(int32_t argc, char **argv) {
         std::cerr << "failed (SocketCAN not available on this platform). " << std::endl;
         return retCode;
 #endif
+
+        auto onTorqueRequestSetPoint =[&socketCAN](cluon::data::Envelope &&env){
+            opendlv::proxy::TorqueRequestSetPoint msg = cluon::extractMessage<opendlv::proxy::TorqueRequestSetPoint>(std::move(env));;
+
+            // Message to encode: LYNX19GW_AS_TORQUE_REQ_FRAME_ID
+            lynx19gw_as_torque_req_t tmp;
+            memset(&tmp, 0, sizeof(tmp));
+            // The following msg would have to be passed to this encoder externally.
+            tmp.torque_set_point_left = lynx19gw_as_torque_req_torque_set_point_left_encode(msg.torqueLeft());
+            tmp.torque_set_point_right = lynx19gw_as_torque_req_torque_set_point_right_encode(msg.torqueRight());
+            //The following statement packs the encoded values into a CAN frame.
+
+            uint8_t buffer[8];
+            int len = lynx19gw_as_torque_req_pack(buffer, &tmp, 8);
+            if ( (0 < len) && (-1 < socketCAN) ) {
+#ifdef __linux__
+                struct can_frame frame;
+                frame.can_id = LYNX19GW_AS_TORQUE_REQ_FRAME_ID;
+                frame.can_dlc = len;
+                memcpy(frame.data, buffer, 8);
+                int32_t nbytes = ::write(socketCAN, &frame, sizeof(struct can_frame));
+                if (!(0 < nbytes)) {
+                    std::clog << "[SocketCANDevice] Writing ID = " << frame.can_id << ", LEN = " << +frame.can_dlc << ", strerror(" << errno << "): '" << strerror(errno) << "'" << std::endl;
+                }
+#endif
+            }
+            return len;
+        };
+        od4.dataTrigger(opendlv::proxy::TorqueRequestSetPoint::ID(), onTorqueRequestSetPoint);
+
 /*
         // Delegate for handling incoming opendlv.proxy.ActuationRequest.
         auto onActuationRequest = [&socketCAN, ENABLED_ACTUATION_BRAKE, ENABLED_ACTUATION_THROTTLE, ENABLED_ACTUATION_STEERING](cluon::data::Envelope &&env){

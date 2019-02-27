@@ -33,8 +33,12 @@ message opendlv.proxy.WheelSpeedFrontReading [id = 2003]{
   int wheelFR [id = 2];
 }
 
-message opendlv.proxy.vehicleState [id = 2005]{
+message opendlv.proxy.VehicleState [id = 2005]{
   int brakeRatio [id = 1];
   int torqueRatio [id = 2];
 }
 
+message opendlv.proxy.TorqueRequestSetPoint [id = 2006]{
+  int torqueLeft [id = 1];
+  int torqueRight [id = 2];
+}

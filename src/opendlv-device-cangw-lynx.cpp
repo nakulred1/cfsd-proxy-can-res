@@ -92,8 +92,10 @@ int32_t main(int32_t argc, char **argv) {
                         msg.accept([](uint32_t, const std::string &, const std::string &) {},
                                 [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
                                 []() {});
-                        //std::cout << sstr.str() << std::endl;
+                        std::cout << sstr.str() << std::endl;
+                        //forward messages out
                     }
+                    od4.send(msg,ts,ID);
                 }
             }
             
@@ -111,6 +113,7 @@ int32_t main(int32_t argc, char **argv) {
                                 []() {});
                         //std::cout << sstr.str() << std::endl;
                     }
+                    od4.send(msg,ts,ID);
                 }
             }
 
@@ -128,11 +131,10 @@ int32_t main(int32_t argc, char **argv) {
                                 []() {});
                         //std::cout << sstr.str() << std::endl;
                     }
+                    od4.send(msg,ts,ID);
                 }
             }
 
-
-            
         };
 
 #ifdef __linux__

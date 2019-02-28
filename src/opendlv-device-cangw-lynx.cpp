@@ -44,19 +44,16 @@ int32_t main(int32_t argc, char **argv) {
     auto commandlineArguments = cluon::getCommandlineArguments(argc, argv);
     if ( (0 == commandlineArguments.count("cid")) ) {
         std::cerr << argv[0] << " translates messages from CAN to ODVD messages and vice versa." << std::endl;
-        std::cerr << "Usage:   " << argv[0] << " --cid=<OD4 session> [--id=ID] --can=<name of the CAN device> [--enablethrottle] [--enablebrake] [--enablesteering] [--verbose]" << std::endl;
+        std::cerr << "Usage:   " << argv[0] << " --cid=<OD4 session> [--id=ID] --can=<name of the CAN device> [--verbose]" << std::endl;
         std::cerr << "         --cid:    CID of the OD4Session to send and receive messages" << std::endl;
         std::cerr << "         --id:     ID to use as senderStamp for sending" << std::endl;
-        std::cerr << "Example: " << argv[0] << " --cid=111 --can=can0 --enablethrottle --enablebrake --enablesteering --verbose" << std::endl;
+        std::cerr << "Example: " << argv[0] << " --cid=111 --can=can0 --verbose" << std::endl;
     }
     else {
         const std::string CANDEVICE{commandlineArguments["can"]};
         const uint32_t ID{(commandlineArguments["id"].size() != 0) ? static_cast<uint32_t>(std::stoi(commandlineArguments["id"])) : 0};
         const bool VERBOSE{commandlineArguments.count("verbose") != 0};
 
-        const bool ENABLED_ACTUATION_THROTTLE{commandlineArguments.count("enablethrottle") != 0};
-        const bool ENABLED_ACTUATION_BRAKE{commandlineArguments.count("enablebrake") != 0};
-        const bool ENABLED_ACTUATION_STEERING{commandlineArguments.count("enablesteering") != 0};
 
         // Interface to a running OpenDaVINCI session; here, you can send and receive messages.
         cluon::OD4Session od4{static_cast<uint16_t>(std::stoi(commandlineArguments["cid"]))};
@@ -79,7 +76,7 @@ int32_t main(int32_t argc, char **argv) {
                         msg.accept([](uint32_t, const std::string &, const std::string &) {},
                                 [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
                                 []() {});
-                        std::cout << sstr.str() << std::endl;
+                        //std::cout << sstr.str() << std::endl;
                     }
                 }
             }
@@ -95,7 +92,7 @@ int32_t main(int32_t argc, char **argv) {
                         msg.accept([](uint32_t, const std::string &, const std::string &) {},
                                 [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
                                 []() {});
-                        std::cout << sstr.str() << std::endl;
+                        //std::cout << sstr.str() << std::endl;
                     }
                 }
             }
@@ -112,7 +109,7 @@ int32_t main(int32_t argc, char **argv) {
                         msg.accept([](uint32_t, const std::string &, const std::string &) {},
                                 [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
                                 []() {});
-                        std::cout << sstr.str() << std::endl;
+                        //std::cout << sstr.str() << std::endl;
                     }
                 }
             }
@@ -129,7 +126,7 @@ int32_t main(int32_t argc, char **argv) {
                         msg.accept([](uint32_t, const std::string &, const std::string &) {},
                                 [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
                                 []() {});
-                        std::cout << sstr.str() << std::endl;
+                        //std::cout << sstr.str() << std::endl;
                     }
                 }
             }
@@ -183,7 +180,6 @@ int32_t main(int32_t argc, char **argv) {
 
         auto onTorqueRequestSetPoint =[&socketCAN](cluon::data::Envelope &&env){
             opendlv::proxy::TorqueRequestSetPoint msg = cluon::extractMessage<opendlv::proxy::TorqueRequestSetPoint>(std::move(env));;
-
             // Message to encode: LYNX19GW_AS_TORQUE_REQ_FRAME_ID
             lynx19gw_as_torque_req_t tmp;
             memset(&tmp, 0, sizeof(tmp));
@@ -191,7 +187,7 @@ int32_t main(int32_t argc, char **argv) {
             tmp.torque_set_point_left = lynx19gw_as_torque_req_torque_set_point_left_encode(msg.torqueLeft());
             tmp.torque_set_point_right = lynx19gw_as_torque_req_torque_set_point_right_encode(msg.torqueRight());
             //The following statement packs the encoded values into a CAN frame.
-
+            std::clog << "Received msg Torque: Left: " << tmp.torque_set_point_left << " Right: "<< tmp.torque_set_point_right <<std::endl;
             uint8_t buffer[8];
             int len = lynx19gw_as_torque_req_pack(buffer, &tmp, 8);
             if ( (0 < len) && (-1 < socketCAN) ) {
@@ -206,130 +202,10 @@ int32_t main(int32_t argc, char **argv) {
                 }
 #endif
             }
-            return len;
         };
+
         od4.dataTrigger(opendlv::proxy::TorqueRequestSetPoint::ID(), onTorqueRequestSetPoint);
 
-/*
-        // Delegate for handling incoming opendlv.proxy.ActuationRequest.
-        auto onActuationRequest = [&socketCAN, ENABLED_ACTUATION_BRAKE, ENABLED_ACTUATION_THROTTLE, ENABLED_ACTUATION_STEERING](cluon::data::Envelope &&env){
-            opendlv::proxy::ActuationRequest ar = cluon::extractMessage<opendlv::proxy::ActuationRequest>(std::move(env));
-
-            const float acceleration{ar.acceleration()};
-            if (acceleration < 0.0f) {
-                // opendlv::proxy::lynx::BrakeRequest brakeRequest;
-                // brakeRequest.enableRequest(ENABLED_ACTUATION_BRAKE && isValid);
-
-                // const float max_deceleration{2.0f};
-                // if (acceleration < -max_deceleration) {
-                //     if (ENABLED_ACTUATION_BRAKE && isValid) {
-                //       std::clog << "[opendlv-device-cangw-lynx] WARNING: Deceleration was limited to " 
-                //         << max_deceleration << ". This should never happen, and "
-                //         << "may be a safety violating behaviour!" 
-                //         << std::endl;
-                //     }
-                //     brakeRequest.brake(-max_deceleration);
-                // }
-                // else {
-                //     brakeRequest.brake(acceleration);
-                // }
-
-                {
-//                     lynx19gw_brake_request_t tmp;
-//                     tmp.brake_request = lynx19gw_brake_request_brake_request_encode(brakeRequest.brake());
-//                     tmp.enable_brake_request = lynx19gw_brake_request_enable_brake_request_encode(brakeRequest.enableRequest());
-
-//                     // The following statement packs the encoded values into a CAN frame.
-//                     uint8_t buffer[8];
-//                     int len = lynx19gw_brake_request_pack(buffer, &tmp, 8);
-//                     if ( (0 < len) && (-1 < socketCAN) ) {
-// #ifdef __linux__
-//                         struct can_frame frame;
-//                         frame.can_id = lynx19gw_BRAKE_REQUEST_FRAME_ID;
-//                         frame.can_dlc = len;
-//                         memcpy(frame.data, buffer, 8);
-//                         int32_t nbytes = ::write(socketCAN, &frame, sizeof(struct can_frame));
-//                         if (!(0 < nbytes)) {
-//                             std::clog << "[SocketCANDevice] Writing ID = " << frame.can_id << ", LEN = " << +frame.can_dlc << ", strerror(" << errno << "): '" << strerror(errno) << "'" << std::endl;
-//                         }
-// #endif
-//                     }
-                }
-            }
-            else {
-                // opendlv::proxy::lynx::AccelerationRequest accelerationRequest;
-                // accelerationRequest.enableRequest(ENABLED_ACTUATION_THROTTLE && isValid);
-                // accelerationRequest.accelerationPedalPosition(acceleration);
-
-                {
-//                     lynx19gw_acceleration_request_t tmp;
-//                     tmp.acceleration_request_pedal = lynx19gw_acceleration_request_acceleration_request_pedal_encode(accelerationRequest.accelerationPedalPosition());
-//                     tmp.enable_acc_request = lynx19gw_acceleration_request_enable_acc_request_encode(accelerationRequest.enableRequest());
-
-//                     // The following statement packs the encoded values into a CAN frame.
-//                     uint8_t buffer[8];
-//                     int len = lynx19gw_acceleration_request_pack(buffer, &tmp, 8);
-//                     if ( (0 < len) && (-1 < socketCAN) ) {
-// #ifdef __linux__
-//                         struct can_frame frame;
-//                         frame.can_id = lynx19gw_ACCELERATION_REQUEST_FRAME_ID;
-//                         frame.can_dlc = len;
-//                         memcpy(frame.data, buffer, 8);
-//                         int32_t nbytes = ::write(socketCAN, &frame, sizeof(struct can_frame));
-//                         if (!(0 < nbytes)) {
-//                             std::clog << "[SocketCANDevice] Writing ID = " << frame.can_id << ", LEN = " << +frame.can_dlc << ", strerror(" << errno << "): '" << strerror(errno) << "'" << std::endl;
-//                         }
-// #endif
-//                     }
-                }
-            }
-
-            // opendlv::proxy::lynx::SteeringRequest steeringRequest;
-            // steeringRequest.enableRequest(ENABLED_ACTUATION_STEERING && isValid);
-            // steeringRequest.steeringRoadWheelAngle(ar.steering());
-            // // Must be 33.535 to disable deltatorque.
-            // steeringRequest.steeringDeltaTorque(33.535);
-
-            {
-                // // Message to encode: LYNX19GW_AS_DL_SENSORS_FRAME_ID
-                // {
-                //     lynx19gw_as_dl_sensors_t tmp;
-                //     memset(&tmp, 0, sizeof(tmp));
-                //     // The following msg would have to be passed to this encoder externally.
-                //     opendlv::proxy::SwitchStateRequest msg;
-                //     tmp.as_state = lynx19gw_as_dl_sensors_as_state_encode(msg.state());
-                //     // The following statement packs the encoded values into a CAN frame.
-                //     int size = lynx19gw_as_dl_sensors_pack(dst, &tmp, len);
-                //     return size;
-                // }
-
-
-//                 lynx19gw_steer_request_t tmp;
-//                 tmp.steer_req_delta_trq = lynx19gw_steer_request_steer_req_delta_trq_encode(steeringRequest.steeringDeltaTorque());
-//                 tmp.steer_req_rwa = lynx19gw_steer_request_steer_req_rwa_encode(steeringRequest.steeringRoadWheelAngle());
-//                 tmp.enable_steer_req = lynx19gw_steer_request_enable_steer_req_encode(steeringRequest.enableRequest());
-
-//                 // The following statement packs the encoded values into a CAN frame.
-//                 uint8_t buffer[8];
-//                 int len = lynx19gw_steer_request_pack(buffer, &tmp, 8);
-//                 if ( (0 < len) && (-1 < socketCAN) ) {
-// #ifdef __linux__
-//                     struct can_frame frame;
-//                     frame.can_id = lynx19gw_STEER_REQUEST_FRAME_ID;
-//                     frame.can_dlc = len;
-//                     memcpy(frame.data, buffer, 8);
-//                     int32_t nbytes = ::write(socketCAN, &frame, sizeof(struct can_frame));
-//                     if (!(0 < nbytes)) {
-//                         std::clog << "[SocketCANDevice] Writing ID = " << frame.can_id << ", LEN = " << +frame.can_dlc << ", strerror(" << errno << "): '" << strerror(errno) << "'" << std::endl;
-//                     }
-// #endif
-//                 }
-            }
-        };
-
-        // Register our lambda for the message identifier for opendlv::proxy::lynx::AccelerationRequest.
-        od4.dataTrigger(opendlv::proxy::ActuationRequest::ID(), onActuationRequest);
-*/
         struct can_frame frame;
         fd_set rfds;
         struct timeval timeout;

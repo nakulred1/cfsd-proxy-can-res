@@ -9,7 +9,7 @@ Mapping the CAN messages to Opendlv messages
 run the microservice:
 
 ```
-docker run --rm -ti --net=host --privileged cfsd-proxy-cangw:v0.0.0 --cid=111 --can=can0 --enablethrottle --enablebrake --enablesteering --verbose
+docker run --rm -ti --net=host --privileged cfsd-proxy-cangw:v0.0.0 --cid=111 --can=can0 --verbose
 ```
 
 

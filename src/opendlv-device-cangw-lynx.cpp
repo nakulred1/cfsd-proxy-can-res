@@ -61,7 +61,65 @@ int32_t main(int32_t argc, char **argv) {
         // Delegate to convert incoming CAN frames into ODVD messages that are broadcast into the OD4Session.
         auto decode = [&od4, VERBOSE, ID](cluon::data::TimeStamp ts, uint16_t canFrameID, uint8_t *src, uint8_t len) {
             if ( (nullptr == src) || (0 == len) ) return;
-            /*****place decode here******/
+
+            // wheels speed Front Reading
+            if (LYNX19GW_NF_NR_SENSORS_2_FRAME_ID == canFrameID) {
+                lynx19gw_nf_nr_sensors_2_t tmp;
+                if (0 == lynx19gw_nf_nr_sensors_2_unpack(&tmp, src, len)) {
+                    opendlv::proxyCANReading::WheelSpeedFront msg;
+                    msg.wheelFrontLeft(lynx19gw_nf_nr_sensors_2_wheel_speed_fl_decode(tmp.wheel_speed_fl));
+                    msg.wheelFrontRight(lynx19gw_nf_nr_sensors_2_wheel_speed_fr_decode(tmp.wheel_speed_fr));
+                    // The following block is automatically added to demonstrate how to display the received values.
+                    {
+                        std::stringstream sstr;
+                        msg.accept([](uint32_t, const std::string &, const std::string &) {},
+                                [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
+                                []() {});
+                        std::cout << sstr.str() << std::endl;
+                    }
+
+
+                }
+            }
+
+            // wheels speed Rare Reading
+            if (LYNX19GW_NR_DL_SENSORS_1_FRAME_ID == canFrameID) {
+                lynx19gw_nr_dl_sensors_1_t tmp;
+                if (0 == lynx19gw_nr_dl_sensors_1_unpack(&tmp, src, len)) {
+                    opendlv::proxyCANReading::WheelSpeedRare msg;
+                    msg.wheelRareLeft(lynx19gw_nr_dl_sensors_1_wheel_speed_rl_decode(tmp.wheel_speed_rl));
+                    msg.wheelRareRight(lynx19gw_nr_dl_sensors_1_wheel_speed_rr_decode(tmp.wheel_speed_rr));
+                    // The following block is automatically added to demonstrate how to display the received values.
+                    {
+                        std::stringstream sstr;
+                        msg.accept([](uint32_t, const std::string &, const std::string &) {},
+                                    [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
+                                    []() {});
+                        std::cout << sstr.str() << std::endl;
+                    }
+                }
+            }
+
+            // AS status Reading
+            if (LYNX19GW_DL_AS_STATUS_FRAME_ID == canFrameID) {
+                lynx19gw_dl_as_status_t tmp;
+                if (0 == lynx19gw_dl_as_status_unpack(&tmp, src, len)) {
+                    opendlv::proxyCANReading::AsStatus msg;
+                    msg.asMission(lynx19gw_dl_as_status_as_mission_decode(tmp.as_mission));
+                    msg.brakeFront(lynx19gw_dl_as_status_brake_front_decode(tmp.brake_front));
+                    msg.brakeRear(lynx19gw_dl_as_status_brake_rear_decode(tmp.brake_rear));
+                    msg.dlStatus(lynx19gw_dl_as_status_dl_status_decode(tmp.dl_status));
+                    msg.accSoC(lynx19gw_dl_as_status_acc_so_c_decode(tmp.acc_so_c));
+                    // The following block is automatically added to demonstrate how to display the received values.
+                    {
+                        std::stringstream sstr;
+                        msg.accept([](uint32_t, const std::string &, const std::string &) {},
+                                [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
+                                []() {});
+                        std::cout << sstr.str() << std::endl;
+                    }
+                }
+            }   
         };
 
 #ifdef __linux__
@@ -106,6 +164,40 @@ int32_t main(int32_t argc, char **argv) {
         std::cerr << "failed (SocketCAN not available on this platform). " << std::endl;
         return retCode;
 #endif
+
+// Encode Vehicle State
+        
+        // writing the AS sensors state to the DL
+        {
+            // The following msg would have to be passed to this encoder externally.
+            opendlv::proxyCANWriting::ASStatus msg;
+            lynx19gw_as_dl_sensors_t tmp;
+            memset(&tmp, 0, sizeof(tmp));
+            tmp.as_state = lynx19gw_as_dl_sensors_as_state_encode(msg.asState());
+            tmp.steering_position = lynx19gw_as_dl_sensors_steering_position_encode(msg.steeringPosition());
+            tmp.rack_position = lynx19gw_as_dl_sensors_rack_position_encode(msg.rackPosition());
+            tmp.pressure_ebs_act = lynx19gw_as_dl_sensors_pressure_ebs_act_encode(msg.pressureEBSAct());
+            tmp.pressure_ebs_line = lynx19gw_as_dl_sensors_pressure_ebs_line_encode(msg.pressureEBSLine());
+            tmp.pressure_service = lynx19gw_as_dl_sensors_pressure_service_encode(msg.pressureService());
+            tmp.pressure_regulator = lynx19gw_as_dl_sensors_pressure_regulator_encode(msg.pressureRegulator());
+            tmp.as_rtd = lynx19gw_as_dl_sensors_as_rtd_encode(msg.asRedyToDrive());
+            // The following statement packs the encoded values into a CAN frame.
+            uint8_t buffer[8];
+            int len = lynx19gw_as_dl_sensors_pack(buffer, &tmp, 8);
+            if ( (0 < len) && (-1 < socketCAN) ) {
+#ifdef __linux__
+                struct can_frame frame;
+                frame.can_id = LYNX19GW_AS_TORQUE_REQ_FRAME_ID;
+                frame.can_dlc = len;
+                memcpy(frame.data, buffer, 8);
+                int32_t nbytes = ::write(socketCAN, &frame, sizeof(struct can_frame));
+                if (!(0 < nbytes)) {
+                    std::clog << "[SocketCANDevice] Writing ID = " << frame.can_id << ", LEN = " << +frame.can_dlc << ", strerror(" << errno << "): '" << strerror(errno) << "'" << std::endl;
+                }
+#endif
+            return size;
+        }
+
 
 /********** sample of encode *************
         auto onTorqueRequestSetPoint =[&socketCAN](cluon::data::Envelope &&env){

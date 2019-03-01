@@ -189,7 +189,8 @@ BO_ 519 NR_PEL_PDO_1_RX: 7 Node_2
  SG_ Error_Reset_Left : 40|16@1+ (1,0) [0|0] ""  PE_L
  SG_ Enable_Drive_Left : 0|8@1+ (1,0) [0|0] ""  PE_L
 
-BO_ 179 NR_DL_Sensors_3: 7 Node_2
+BO_ 179 NR_DL_Sensors_3: 8 Node_2
+ SG_ Brake_Rear : 56|8@1+ (1,0) [0|0] "" Vector__XXX
  SG_ Water_Temp_3 : 48|8@1+ (1,0) [0|200] "oC" Vector__XXX
  SG_ Water_Temp_2 : 40|8@1+ (1,0) [0|200] "oC" Vector__XXX
  SG_ Water_Temp_1 : 32|8@1+ (1,0) [0|200] "oC" Vector__XXX

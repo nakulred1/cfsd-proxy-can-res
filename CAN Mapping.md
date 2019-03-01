@@ -50,7 +50,7 @@ Lynx Message to OpenDLV message
 |                                       |              |                                         |    brakeFront     |     sensor     |        %        |
 |                                       |              |                                         |     brakeRear     |     sensor     |        ?        |
 |                                       |              |                                         |     dlStatus      |     sensor     |       0/1       |
-|                                       |              |                                         |     asMission     |     sensor     |       0-8       |
+|  opendlv::proxy::SwitchStateReading   |     1406     |                                         |     asMission     |     sensor     |       0-8       |
 |  opendlv::proxy::SwitchStateReading   |     1404     | opendlv.proxyCANWriting.ASStatus        |   asRedyToDrive   |      log       |       1/0       |
 | opendlv::proxy::GroundSteeringReading |     1200     |                                         | steeringPosition  |      log       |       mm        |
 |                                       |     1206     |                                         |   rackPosition    |      log       |       mm        |

@@ -301,7 +301,7 @@ int32_t main(int32_t argc, char **argv) {
         // another condition is brake is not larger than 3 brakeState>2
         bool torqueRightGet = false;
         int torqueRightValue = 0;
-        auto onTorqueRequest = [&torqueRightValue,&torqueRightGet,&socketCAN](cluon::data::Envelope &&env){
+        auto onTorqueRequest = [&torqueRightValue,&torqueRightGet,&socketCAN,&brakeState](cluon::data::Envelope &&env){
             opendlv::proxy::TorqueRequest torqueReq = cluon::extractMessage<opendlv::proxy::TorqueRequest>(std::move(env));
             if(env.senderStamp() == 1501 ){//Right motor 
                 torqueRightGet = true;

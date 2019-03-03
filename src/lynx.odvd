@@ -17,7 +17,7 @@
  */
 
 message opendlv.proxyCANReading.AsStatus [id = 2001] {
-    itn accSoC [id = 1];
+    int accSoC [id = 1];
     int brakeRear [id = 2];
     int brakeFront [id = 3];
     int dlStatus [id = 4];

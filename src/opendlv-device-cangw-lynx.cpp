@@ -57,11 +57,34 @@ int32_t main(int32_t argc, char **argv) {
 
         // Interface to a running OpenDaVINCI session; here, you can send and receive messages.
         cluon::OD4Session od4{static_cast<uint16_t>(std::stoi(commandlineArguments["cid"]))};
-
+        int brakeState = 0;//get the brake pressure to determin braking.
         // Delegate to convert incoming CAN frames into ODVD messages that are broadcast into the OD4Session.
-        auto decode = [&od4, VERBOSE, ID](cluon::data::TimeStamp ts, uint16_t canFrameID, uint8_t *src, uint8_t len) {
+        auto decode = [&od4, VERBOSE, ID,&brakeState](cluon::data::TimeStamp ts, uint16_t canFrameID, uint8_t *src, uint8_t len) {
             if ( (nullptr == src) || (0 == len) ) return;
-
+            // pedals reading
+            if (LYNX19GW_NF_NR_SENSORS_1_FRAME_ID == canFrameID) {
+                lynx19gw_nf_nr_sensors_1_t tmp;
+                if (0 == lynx19gw_nf_nr_sensors_1_unpack(&tmp, src, len)) {
+                    opendlv::proxyCANReading::PedalRatio msg;
+                    msg.brake(lynx19gw_nf_nr_sensors_1_brake_decode(tmp.brake));
+                    msg.throttle(lynx19gw_nf_nr_sensors_1_throttle_decode(tmp.throttle));
+                    // The following block is automatically added to demonstrate how to display the received values.
+                    {
+                        std::stringstream sstr;
+                        msg.accept([](uint32_t, const std::string &, const std::string &) {},
+                                [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
+                                []() {});
+                        std::cout << sstr.str() << std::endl;
+                    }
+                    opendlv::proxy::PedalPositionReading msgThrottlePedalReading;
+                    msgThrottlePedalReading.position(msg.throttle());
+                    od4.send(msgThrottlePedalReading,ts,1901);
+                    
+                    opendlv::proxy::PedalPositionReading msgBrakePedalReading;
+                    msgBrakePedalReading.position(msg.brake());
+                    od4.send(msgBrakePedalReading,ts,1901);
+                }
+            }
             // wheels speed Front Reading
             if (LYNX19GW_NF_NR_SENSORS_2_FRAME_ID == canFrameID) {
                 lynx19gw_nf_nr_sensors_2_t tmp;
@@ -84,7 +107,6 @@ int32_t main(int32_t argc, char **argv) {
                     opendlv::proxy::WheelSpeedReading msgWheelFrontLeft;
                     msgWheelFrontLeft.wheelSpeed(msg.wheelFrontLeft());
                     od4.send(msgWheelFrontLeft, ts, 1904); // 1904 for Front Left
-
                 }
             }
 
@@ -140,6 +162,7 @@ int32_t main(int32_t argc, char **argv) {
 
                     opendlv::proxy::PedalPositionReading msgBrakeFront;
                     msgBrakeFront.position(msg.brakeFront());
+                    brakeState = msg.brakeFront();//update brake pressure
                     od4.send(msgBrakeFront,ts,1922);
 
 

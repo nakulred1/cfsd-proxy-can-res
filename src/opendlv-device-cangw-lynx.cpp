@@ -200,30 +200,66 @@ int32_t main(int32_t argc, char **argv) {
         std::cerr << "failed (SocketCAN not available on this platform). " << std::endl;
         return retCode;
 #endif
-
-// Encode Vehicle State
         
+// Encode Vehicle State
+        opendlv::proxyCANWriting::ASStatus msgASStatus;
+        auto onSwitchStateReading = [&msgASStatus](cluon::data::Envelope &&env){
+            opendlv::proxy::SwitchStateReading sstateReading = cluon::extractMessage<opendlv::proxy::SwitchStateReading>(std::move(env));
+            if(env.senderStamp() == 1401 ){//Switch AS State
+                msgASStatus.asState(sstateReading.state());
+            }else if(env.senderStamp() == 1404){// Ready to drive
+                msgASStatus.asRedyToDrive(sstateReading.state());
+            }
+        };
+        od4.dataTrigger(opendlv::proxy::SwitchStateReading::ID(), onSwitchStateReading);
+
+        auto onGroundSteeringReading=[&msgASStatus](cluon::data::Envelope &&env){
+            opendlv::proxy::GroundSteeringReading groundSpeedReading =  cluon::extractMessage<opendlv::proxy::GroundSteeringReading>(std::move(env));
+            if(env.senderStamp() == 1200){//Steering actuator reading
+                msgASStatus.steeringPosition(groundSpeedReading.groundSteering());
+            }else if(env.senderStamp() == 1206){//steering rack reading
+                msgASStatus.rackPosition(groundSpeedReading.groundSteering());
+            }
+        };
+        od4.dataTrigger(opendlv::proxy::GroundSteeringReading::ID(), onGroundSteeringReading);
+
+        auto onPressureReading =[&msgASStatus](cluon::data::Envelope &&env){
+            opendlv::proxy::PressureReading pressureReading = cluon::extractMessage<opendlv::proxy::PressureReading>(std::move(env));
+            if (env.senderStamp() == 1201){ // EBS Line
+                msgASStatus.pressureEBSLine(pressureReading.pressure());
+            }else if (env.senderStamp() == 1202){ // Service tank
+                msgASStatus.pressureService(pressureReading.pressure());
+            }else if (env.senderStamp() == 1203){ // EBS Act
+                msgASStatus.pressureEBSAct(pressureReading.pressure());
+            }else if (env.senderStamp() == 1205){ // Service regulator
+                msgASStatus.pressureRegulator(pressureReading.pressure());
+            }
+        };
+        od4.dataTrigger(opendlv::proxy::PressureReading::ID(), onPressureReading);
+
+
+        // Set the Autonomus sensors sending the messages to via CAN to Datalogger with a certain frequency.
+        int AS2DLFREQ = 33;//sest the update to 33 frame
         // writing the AS sensors state to the DL
-        {
+        auto as2dlAtFrequency{[&msgASStatus,&socketCAN, &od4]() -> bool{
             // The following msg would have to be passed to this encoder externally.
-            opendlv::proxyCANWriting::ASStatus msg;
             lynx19gw_as_dl_sensors_t tmp;
             memset(&tmp, 0, sizeof(tmp));
-            tmp.as_state = lynx19gw_as_dl_sensors_as_state_encode(msg.asState());
-            tmp.steering_position = lynx19gw_as_dl_sensors_steering_position_encode(msg.steeringPosition());
-            tmp.rack_position = lynx19gw_as_dl_sensors_rack_position_encode(msg.rackPosition());
-            tmp.pressure_ebs_act = lynx19gw_as_dl_sensors_pressure_ebs_act_encode(msg.pressureEBSAct());
-            tmp.pressure_ebs_line = lynx19gw_as_dl_sensors_pressure_ebs_line_encode(msg.pressureEBSLine());
-            tmp.pressure_service = lynx19gw_as_dl_sensors_pressure_service_encode(msg.pressureService());
-            tmp.pressure_regulator = lynx19gw_as_dl_sensors_pressure_regulator_encode(msg.pressureRegulator());
-            tmp.as_rtd = lynx19gw_as_dl_sensors_as_rtd_encode(msg.asRedyToDrive());
+            tmp.as_state = lynx19gw_as_dl_sensors_as_state_encode(msgASStatus.asState());
+            tmp.steering_position = lynx19gw_as_dl_sensors_steering_position_encode(msgASStatus.steeringPosition());
+            tmp.rack_position = lynx19gw_as_dl_sensors_rack_position_encode(msgASStatus.rackPosition());
+            tmp.pressure_ebs_act = lynx19gw_as_dl_sensors_pressure_ebs_act_encode(msgASStatus.pressureEBSAct());
+            tmp.pressure_ebs_line = lynx19gw_as_dl_sensors_pressure_ebs_line_encode(msgASStatus.pressureEBSLine());
+            tmp.pressure_service = lynx19gw_as_dl_sensors_pressure_service_encode(msgASStatus.pressureService());
+            tmp.pressure_regulator = lynx19gw_as_dl_sensors_pressure_regulator_encode(msgASStatus.pressureRegulator());
+            tmp.as_rtd = lynx19gw_as_dl_sensors_as_rtd_encode(msgASStatus.asRedyToDrive());
             // The following statement packs the encoded values into a CAN frame.
             uint8_t buffer[8];
             int len = lynx19gw_as_dl_sensors_pack(buffer, &tmp, 8);
             if ( (0 < len) && (-1 < socketCAN) ) {
 #ifdef __linux__
                 struct can_frame frame;
-                frame.can_id = LYNX19GW_AS_TORQUE_REQ_FRAME_ID;
+                frame.can_id = LYNX19GW_AS_DL_SENSORS_FRAME_ID;
                 frame.can_dlc = len;
                 memcpy(frame.data, buffer, 8);
                 int32_t nbytes = ::write(socketCAN, &frame, sizeof(struct can_frame));
@@ -231,9 +267,10 @@ int32_t main(int32_t argc, char **argv) {
                     std::clog << "[SocketCANDevice] Writing ID = " << frame.can_id << ", LEN = " << +frame.can_dlc << ", strerror(" << errno << "): '" << strerror(errno) << "'" << std::endl;
                 }
 #endif
-            return len;
             }
-        }
+            return true;
+        }};
+        od4.timeTrigger(AS2DLFREQ, as2dlAtFrequency);
 
 
 /********** sample of encode *************

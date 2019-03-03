@@ -60,3 +60,16 @@ Lynx Message to OpenDLV message
 |                                       |     1203     |                                         |  pressureEBSAct   |      log       |       bar       |
 |  opendlv::proxy::SwitchStateReading   |     1401     |                                         |      asState      |      log       |     states      |
 
+Sending time trigger:
+
+```
+auto atFrequency{[&ps3controller, &ANGLECONVERSION, &VERBOSE, &od4, &od4pwm]() -> bool
+    {
+      
+      return true;
+    }};
+        
+
+    od4.timeTrigger(FREQ, atFrequency);
+```
+

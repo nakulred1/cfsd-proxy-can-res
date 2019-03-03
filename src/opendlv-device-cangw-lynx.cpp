@@ -264,7 +264,7 @@ int32_t main(int32_t argc, char **argv) {
         // Set the Autonomus sensors sending the messages to via CAN to Datalogger with a certain frequency.
         int AS2DLFREQ = 33;//sest the update to 33 frame
         // writing the AS sensors state to the DL
-        auto as2dlAtFrequency{[&msgASStatus,&socketCAN, &od4]() -> bool{
+        auto as2dlAtFrequency{[&msgASStatus,&socketCAN]() -> bool{
             // The following msg would have to be passed to this encoder externally.
             lynx19gw_as_dl_sensors_t tmp;
             memset(&tmp, 0, sizeof(tmp));
@@ -294,6 +294,52 @@ int32_t main(int32_t argc, char **argv) {
             return true;
         }};
         od4.timeTrigger(AS2DLFREQ, as2dlAtFrequency);
+
+
+        // Torque setting Left and Right
+        // Sending the Torque request via CAN tiggered by the Left torque (only after right value is updated). Right value is updating. 
+        // another condition is brake is not larger than 3 brakeState>2
+        bool torqueRightGet = false;
+        int torqueRightValue = 0;
+        auto onTorqueRequest = [&torqueRightValue,&torqueRightGet,&socketCAN](cluon::data::Envelope &&env){
+            opendlv::proxy::TorqueRequest torqueReq = cluon::extractMessage<opendlv::proxy::TorqueRequest>(std::move(env));
+            if(env.senderStamp() == 1501 ){//Right motor 
+                torqueRightGet = true;
+                torqueRightValue = torqueReq.torque();
+            }else if(env.senderStamp() == 1500){// Left motor only send when torque Right and Left both received
+                int torqueLeftValue = torqueReq.torque();
+                if(torqueRightGet == true){
+                    torqueRightGet = false;
+                    //send the message
+                    // Message to encode: LYNX19GW_AS_TORQUE_REQ_FRAME_ID
+                    if(brakeState < 2){
+                        brakeState = 0;
+                        lynx19gw_as_torque_req_t tmp;
+                        memset(&tmp, 0, sizeof(tmp));
+                        // The following msg would have to be passed to this encoder externally.
+                        opendlv::proxyCANWriting::ASTorque msg;
+                        tmp.torque_set_point_left = lynx19gw_as_torque_req_torque_set_point_left_encode(torqueLeftValue);
+                        tmp.torque_set_point_right = lynx19gw_as_torque_req_torque_set_point_right_encode(torqueRightValue);
+                        //The following statement packs the encoded values into a CAN frame.
+                        std::clog << "Received msg Torque: Left: " << tmp.torque_set_point_left << " Right: "<< tmp.torque_set_point_right <<std::endl;
+                        uint8_t buffer[8];
+                        int len = lynx19gw_as_torque_req_pack(buffer, &tmp, 8);
+                        if ( (0 < len) && (-1 < socketCAN) ) {
+#ifdef __linux__
+                            struct can_frame frame;
+                            frame.can_id = LYNX19GW_AS_TORQUE_REQ_FRAME_ID;
+                            frame.can_dlc = len;
+                            memcpy(frame.data, buffer, 8);
+                            int32_t nbytes = ::write(socketCAN, &frame, sizeof(struct can_frame));
+                            if (!(0 < nbytes)) {
+                                std::clog << "[SocketCANDevice] Writing ID = " << frame.can_id << ", LEN = " << +frame.can_dlc << ", strerror(" << errno << "): '" << strerror(errno) << "'" << std::endl;
+                            }
+#endif
+                    }
+                }
+            }
+        }};
+        od4.dataTrigger(opendlv::proxy::TorqueRequest::ID(), onTorqueRequest);
 
 
 /********** sample of encode *************

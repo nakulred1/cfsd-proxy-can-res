@@ -40,16 +40,16 @@ Lynx Message to OpenDLV message
 | :-----------------------------------: | :----------: | --------------------------------------- | :---------------: | :------------: | :-------------: |
 |     opendlv::proxy::TorqueRequest     |     1501     | opendlv.proxyCANWriting.ASTorque        |    torqueRight    |      req       |     0~24cNm     |
 |                                       |     1500     |                                         |    torqueLeft     |      req       |       cNm       |
-|                                       |              | opendlv.proxyCANReading.WheelSpeedRare  |  wheelRareRight   |     sensor     |      Km/h       |
-|                                       |              |                                         |   wheelRareLeft   |     sensor     |      Km/h       |
-|                                       |              | opendlv.proxyCANReading.WheelSpeedFront |  wheelFrontRight  |     sensor     |      Km/h       |
-|                                       |              |                                         |  wheelFrontLeft   |     sensor     |      Km/h       |
-|                                       |              | opendlv.proxyCANReading.PedalRatio      |       brake       |     sensor     |        %        |
-|                                       |              |                                         |     throttle      |     sensor     |        %        |
-|                                       |              | opendlv.proxyCANReading.AsStatus        |      accSoC       |     sensor     | State of Charge |
-|                                       |              |                                         |    brakeFront     |     sensor     |        %        |
-|                                       |              |                                         |     brakeRear     |     sensor     |        ?        |
-|                                       |              |                                         |     dlStatus      |     sensor     |       0/1       |
+|    opendlv.proxy.WheelSpeedReading    |     1901     | opendlv.proxyCANReading.WheelSpeedRare  |  wheelRareRight   |     sensor     |      Km/h       |
+|                                       |     1902     |                                         |   wheelRareLeft   |     sensor     |      Km/h       |
+|                                       |     1903     | opendlv.proxyCANReading.WheelSpeedFront |  wheelFrontRight  |     sensor     |      Km/h       |
+|                                       |     1904     |                                         |  wheelFrontLeft   |     sensor     |      Km/h       |
+|         PedalPositionReading          |     1901     | opendlv.proxyCANReading.PedalRatio      |       brake       |     sensor     |        %        |
+|                                       |     1902     |                                         |     throttle      |     sensor     |        %        |
+|     opendlv.proxy.VoltageReading      |     1921     | opendlv.proxyCANReading.AsStatus        |      accSoC       |     sensor     | State of Charge |
+|  opendlv.proxy.PedalPositionReading   |     1922     |                                         |    brakeFront     |     sensor     |        %        |
+|  opendlv.proxy.PedalPositionReading   |     1923     |                                         |     brakeRear     |     sensor     |        ?        |
+|  opendlv::proxy::SwitchStateReading   |     1924     |                                         |     dlStatus      |     sensor     |       0/1       |
 |  opendlv::proxy::SwitchStateReading   |     1406     |                                         |     asMission     |     sensor     |       0-8       |
 |  opendlv::proxy::SwitchStateReading   |     1404     | opendlv.proxyCANWriting.ASStatus        |   asRedyToDrive   |      log       |       1/0       |
 | opendlv::proxy::GroundSteeringReading |     1200     |                                         | steeringPosition  |      log       |       mm        |

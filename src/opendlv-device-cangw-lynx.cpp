@@ -77,7 +77,13 @@ int32_t main(int32_t argc, char **argv) {
                                 []() {});
                         std::cout << sstr.str() << std::endl;
                     }
+                    opendlv.proxy.WheelSpeedReading msgWheelFrontRight;
+                    msgWheelsFront.wheelSpeed(msg.wheelFrontRight);
+                    od4.send(msgWheelsFront, ts, 1903); // 1903 for Front Right
 
+                    opendlv.proxy.WheelSpeedReading msgWheelFrontRight;
+                    msgWheelsFront.wheelSpeed(msg.wheelFrontLeft);
+                    od4.send(msgWheelsFront, ts, 1904); // 1904 for Front Left
 
                 }
             }
@@ -97,6 +103,15 @@ int32_t main(int32_t argc, char **argv) {
                                     []() {});
                         std::cout << sstr.str() << std::endl;
                     }
+
+                    opendlv.proxy.WheelSpeedReading msgWheelRareRight;
+                    msgWheelRareRight.wheelSpeed(msg.wheelRareRight);
+                    od4.send(msgWheelRareRight, ts, 1901); // 1901 for Rare Right
+                    
+                    opendlv.proxy.WheelSpeedReading msgWheelRareLeft;
+                    msgWheelRareLeft.wheelSpeed(msg.wheelRareLeft);
+                    od4.send(msgWheelRareLeft, ts, 1902); //1902 for Rare Left
+
                 }
             }
 
@@ -118,6 +133,27 @@ int32_t main(int32_t argc, char **argv) {
                                 []() {});
                         std::cout << sstr.str() << std::endl;
                     }
+                    
+                    opendlv::proxy::SwitchStateReading msgAMI;
+                    msgAMI.state(msg.asMission);
+                    od4.send(msgAMI,ts,1406);
+
+                    opendlv::proxy::PedalPositionReading msgBrakeFront;
+                    msgBrakeFront.position(msg.brakeFront);
+                    od4.send(msgBrakeFront,ts,1922)
+
+
+                    opendlv::proxy::PedalPositionReading msgBrakeRare;
+                    msgBrakeRare.position(msg.brakeRear);
+                    od4.send(msgBrakeRare,ts,1923)
+
+                    opendlv.proxy.VoltageReading msgAccSoC;
+                    msgAccSoC.voltage(msg.accSoC);
+                    od4.send(msgAccSoC,ts,1921);
+
+                    opendlv.proxy.VoltageReading msgDlStatus;
+                    msgDlStatus.voltage(msg.dlStatus);
+                    od4.send(msgDlStatus,ts,1924);
                 }
             }   
         };

@@ -47,7 +47,7 @@ int32_t main(int32_t argc, char **argv) {
         std::cerr << "Usage:   " << argv[0] << " --cid=<OD4 session> [--id=ID] --can=<name of the CAN device> [--verbose]" << std::endl;
         std::cerr << "         --cid:    CID of the OD4Session to send and receive messages" << std::endl;
         std::cerr << "         --id:     ID to use as senderStamp for sending" << std::endl;
-        std::cerr << "Example: " << argv[0] << " --cid=111 --can=can0 --verbose" << std::endl;
+        std::cerr << "Example: " << argv[0] << " --cid=111 --can=can1 --verbose" << std::endl;
     }
     else {
         const std::string CANDEVICE{commandlineArguments["can"]};
@@ -57,9 +57,8 @@ int32_t main(int32_t argc, char **argv) {
 
         // Interface to a running OpenDaVINCI session; here, you can send and receive messages.
         cluon::OD4Session od4{static_cast<uint16_t>(std::stoi(commandlineArguments["cid"]))};
-        int brakeState = 0;//get the brake pressure to determin braking.
         // Delegate to convert incoming CAN frames into ODVD messages that are broadcast into the OD4Session.
-        auto decode = [&od4, VERBOSE, ID,&brakeState](cluon::data::TimeStamp ts, uint16_t canFrameID, uint8_t *src, uint8_t len) {
+        auto decode = [&od4, VERBOSE, ID](cluon::data::TimeStamp ts, uint16_t canFrameID, uint8_t *src, uint8_t len) {
             if ( (nullptr == src) || (0 == len) ) return;
             
         };

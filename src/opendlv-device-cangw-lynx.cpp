@@ -78,7 +78,7 @@ int32_t main(int32_t argc, char **argv) {
                     }
                     opendlv::proxy::PedalPositionReading msgThrottlePedalReading;
                     msgThrottlePedalReading.position(msg.throttle());
-                    od4.send(msgThrottlePedalReading,ts,1901);
+                    od4.send(msgThrottlePedalReading,ts,1902);
                     
                     opendlv::proxy::PedalPositionReading msgBrakePedalReading;
                     msgBrakePedalReading.position(msg.brake());
@@ -400,6 +400,7 @@ int32_t main(int32_t argc, char **argv) {
                     cluon::data::TimeStamp sampleTimeStamp;
                     sampleTimeStamp.seconds(socketTimeStamp.tv_sec)
                                    .microseconds(socketTimeStamp.tv_usec);
+                    std::cout<<"...";
                     decode(sampleTimeStamp, frame.can_id, frame.data, frame.can_dlc);
                 }
             }

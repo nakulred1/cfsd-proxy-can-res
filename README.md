@@ -6,20 +6,20 @@ Mapping the CAN messages to Opendlv messages
 run the microservice:
 
 ```
-docker run --rm -ti --net=host --privileged cfsd-proxy-cangw:v0.0.0 --cid=111 --can=can0 --verbose
+docker run --rm -ti --net=host --privileged cfsd-proxy-cangw-res:v0.0.0 --cid=111 --can=can0 --verbose
 ```
 
 
 generate the dbc map file:
 
 ```
-docker run --rm -ti -v $PWD/src/:/in -w /in dbc2odvd:v0.0.0 generateHeaderOnly.sh lynx19gw.dbc lynx.odvd
+docker run --rm -ti -v $PWD/src/:/in -w /in dbc2odvd:v0.0.0 generateHeaderOnly.sh lynxres19gw.dbc lynx-v0.1.0.odvd
 ```
 
 get the code Snippet:
 
 ```
-docker run --rm -ti -v $PWD/src/:/in -w /in dbc2odvd:v0.0.0 generateMappingCodeSnippet.awk lynx19gw.dbc.map
+docker run --rm -ti -v $PWD/src/:/in -w /in dbc2odvd:v0.0.0 generateMappingCodeSnippet.awk lynxres19gw.dbc.map
 ```
 
 Setting the CAN:

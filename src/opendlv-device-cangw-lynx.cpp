@@ -17,7 +17,7 @@
 
 #include "cluon-complete.hpp"
 #include "opendlv-standard-message-set.hpp"
-#include "lynx19gw.hpp"
+#include "lynxres19gw.hpp"
 
 #include <sys/ioctl.h>
 #include <sys/socket.h>
@@ -60,7 +60,42 @@ int32_t main(int32_t argc, char **argv) {
         // Delegate to convert incoming CAN frames into ODVD messages that are broadcast into the OD4Session.
         auto decode = [&od4, VERBOSE, ID](cluon::data::TimeStamp ts, uint16_t canFrameID, uint8_t *src, uint8_t len) {
             if ( (nullptr == src) || (0 == len) ) return;
-            
+            if (LYNXRES19GW_PDO_RES_STATUS_FRAME_ID == canFrameID) {
+                lynxres19gw_pdo_res_status_t tmp;
+                if (0 == lynxres19gw_pdo_res_status_unpack(&tmp, src, len)) {
+                    opendlv::proxyCANReading::RESStatus msg;
+                    msg.resButtons(lynxres19gw_pdo_res_status_res_buttons_decode(tmp.res_buttons));
+                    msg.resEStop(lynxres19gw_pdo_res_status_res_e_stop_decode(tmp.res_e_stop));
+                    msg.resQuality(lynxres19gw_pdo_res_status_res_quality_decode(tmp.res_quality));
+                    msg.resStatus(lynxres19gw_pdo_res_status_res_status_decode(tmp.res_status));
+                    // The following block is automatically added to demonstrate how to display the received values.
+                    {
+                        std::stringstream sstr;
+                        msg.accept([](uint32_t, const std::string &, const std::string &) {},
+                                [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
+                                []() {});
+                        std::cout << sstr.str() << std::endl;
+                    }
+                    
+                    opendlv::proxy::SwitchStateReading msgRESBtn;
+                    msgRESBtn.state(msg.resButtons());
+                    od4.send(msgRESBtn,ts,1410);
+
+                    opendlv::proxy::SwitchStateReading msgResQuality;
+                    msgResQuality.state(msg.resQuality());
+                    od4.send(msgResQuality,ts,1409);
+
+                    opendlv::proxy::SwitchStateReading msgResEStop;
+                    msgResEStop.state(msg.resEStop());
+                    od4.send(msgResEStop,ts,1408);
+
+                    opendlv::proxy::SwitchStateReading msgResStatus;
+                    msgResStatus.state(msg.resStatus());
+                    od4.send(msgResStatus,ts,1407);
+                }
+            }
+
+
         };
 
 #ifdef __linux__
@@ -107,8 +142,19 @@ int32_t main(int32_t argc, char **argv) {
 #endif
         
 // Encode Vehicle State
-
-
+/*
+        {
+            lynxres19gw_nmt_node_control_t tmp;
+            memset(&tmp, 0, sizeof(tmp));
+            // The following msg would have to be passed to this encoder externally.
+            opendlv::proxyCANWriting::NMT msg;
+            tmp.node_state = lynxres19gw_nmt_node_control_node_state_encode(msg.nodeState());
+            tmp.node_id = lynxres19gw_nmt_node_control_node_id_encode(msg.nodeId());
+            // The following statement packs the encoded values into a CAN frame.
+            int size = lynxres19gw_nmt_node_control_pack(dst, &tmp, len);
+            return size;
+        }
+*/
 /********** sample of encode *************
         auto onTorqueRequestSetPoint =[&socketCAN](cluon::data::Envelope &&env){
             opendlv::proxy::TorqueRequestSetPoint msg = cluon::extractMessage<opendlv::proxy::TorqueRequestSetPoint>(std::move(env));;

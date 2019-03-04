@@ -54,3 +54,15 @@ message opendlv.proxyCANWriting.ASStatus [id = 2006]{
     int pressureEBSAct [id = 7];
     int asState [id = 8];
 }
+
+message opendlv.proxyCANWriting.NMT [id = 2007]{
+    uint8 nodeState [id = 1];
+    uint8 nodeId [id = 2];
+}
+
+message opendlv.proxyCANReading.RESStatus [id = 2008]{
+    uint8 resStatus [id = 1];
+    uint8 resEStop [id = 2];
+    uint8 resQuality [id = 3];
+    uint8 resButtons [id = 4]; 
+}

@@ -1,0 +1,87 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: RES EnergyMeter AS_Node
+
+
+BO_ 401 PDO_RES_Status: 8 Vector__XXX
+ SG_ RES_Status : 56|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ RES_E_Stop : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ RES_Quality : 48|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ RES_Buttons : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 0 NMT_Node_Control: 2 Vector__XXX
+ SG_ Node_State : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ Node_Id : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 1297 AS_EBS_Supervision: 8 Vector__XXX
+ SG_ AS_Pr_Rear_Hydr : 48|8@1+ (0.05,0) [0|0] "bar" Vector__XXX
+ SG_ AS_Pr_Front_Hydr : 40|8@1+ (0.05,0) [0|0] "bar" Vector__XXX
+ SG_ AS_Pr_Service : 24|8@1+ (0.05,0) [0|0] "bar" Vector__XXX
+ SG_ AS_Pr_Regulator : 32|8@1+ (0.05,0) [0|0] "bar" Vector__XXX
+ SG_ AS_Pr_EBS_Line : 16|8@1+ (0.05,0) [0|0] "bar" Vector__XXX
+ SG_ AS_Pr_EBS_Act : 8|8@1+ (0.05,0) [0|0] "bar" Vector__XXX
+ SG_ AS_DO_EBS_Heartbeat : 0|8@1+ (1,0) [0|0] "-" Vector__XXX
+
+BO_ 1282 DV_system_status: 5 Vector__XXX
+ SG_ Steering_state : 8|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ Service_brake_state : 9|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Lap_counter : 11|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ EBS_state : 3|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Cones_count_all : 23|17@1+ (1,0) [0|131071] "" Vector__XXX
+ SG_ Cones_count_actual : 15|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ ASSI_state : 0|3@1+ (1,0) [0|7] "" Vector__XXX
+ SG_ AMI_state : 5|3@1+ (1,0) [0|7] "" Vector__XXX
+
+BO_ 1281 DV_driving_dynamics_2: 6 Vector__XXX
+ SG_ Yaw_rate : 32|16@1- (0.0078125,0) [0|0] "°/s" Vector__XXX
+ SG_ Acceleration_longitudinal : 0|16@1- (0.001953125,0) [0|0] "m/s^2" Vector__XXX
+ SG_ Acceleration_lateral : 16|16@1- (0.001953125,0) [0|0] "m/s^2" Vector__XXX
+
+BO_ 1280 DV_driving_dynamics_1: 8 Vector__XXX
+ SG_ Steering_angle_target : 24|8@1- (0.5,0) [0|0] "°" Vector__XXX
+ SG_ Steering_angle_actual : 16|8@1- (0.5,0) [0|0] "°" Vector__XXX
+ SG_ Speed_target : 8|8@1+ (1,0) [0|0] "km/h" Vector__XXX
+ SG_ Speed_actual : 0|8@1+ (1,0) [0|0] "km/h" Vector__XXX
+ SG_ Motor_moment_target : 56|8@1- (1,0) [0|0] "%" Vector__XXX
+ SG_ Motor_moment_actual : 48|8@1- (1,0) [0|0] "%" Vector__XXX
+ SG_ Brake_hydr_target : 40|8@1+ (1,0) [0|0] "%" Vector__XXX
+ SG_ Brake_hydr_actual : 32|8@1+ (1,0) [0|0] "%" Vector__XXX
+
+
+
+BA_DEF_  "BusType" STRING ;
+BA_DEF_DEF_  "BusType" "";
+

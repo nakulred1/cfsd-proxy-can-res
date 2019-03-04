@@ -27,8 +27,8 @@ ADD . /opt/sources
 WORKDIR /opt/sources
 RUN mkdir build && \
     cd build && \
-    generateHeaderOnly.sh ../src/lynx19gw.dbc ../src/lynx.odvd && \
-    cp lynx19gw.hpp /tmp
+    generateHeaderOnly.sh ../src/lynxres19gw.dbc ../src/lynx-v0.1.0.odvd && \
+    cp lynxres19gw.hpp /tmp
 
 
 # Part to build opendlv-device-cangw-lynx.
@@ -46,7 +46,7 @@ ADD . /opt/sources
 WORKDIR /opt/sources
 
 RUN mkdir -p /opt/sources/build
-COPY --from=generator /tmp/lynx19gw.hpp /opt/sources/build
+COPY --from=generator /tmp/lynxres19gw.hpp /opt/sources/build
 
 RUN cd /opt/sources/build && \
     cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=/tmp/opendlv-device-cangw-lynx-dest .. && \

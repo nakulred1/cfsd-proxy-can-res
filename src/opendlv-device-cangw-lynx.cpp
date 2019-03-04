@@ -264,7 +264,8 @@ int32_t main(int32_t argc, char **argv) {
         // Set the Autonomus sensors sending the messages to via CAN to Datalogger with a certain frequency.
         int AS2DLFREQ = 33;//sest the update to 33 frame
         // writing the AS sensors state to the DL
-        auto as2dlAtFrequency{[&msgASStatus,&socketCAN]() -> bool{
+        auto as2dlThread{[&msgASStatus,&socketCAN,&od4,AS2DLFREQ](){
+            auto as2dlAtFrequency{[&msgASStatus,&socketCAN]() -> bool{
             // The following msg would have to be passed to this encoder externally.
             lynx19gw_as_dl_sensors_t tmp;
             memset(&tmp, 0, sizeof(tmp));
@@ -292,8 +293,12 @@ int32_t main(int32_t argc, char **argv) {
 #endif
             }
             return true;
+            }};
+            od4.timeTrigger(AS2DLFREQ, as2dlAtFrequency);
         }};
-        od4.timeTrigger(AS2DLFREQ, as2dlAtFrequency);
+        
+        std::thread dashboardThread(as2dlThread);
+        
 
 
         // Torque setting Left and Right

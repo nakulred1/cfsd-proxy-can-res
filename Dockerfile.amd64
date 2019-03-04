@@ -27,7 +27,7 @@ ADD . /opt/sources
 WORKDIR /opt/sources
 RUN mkdir build && \
     cd build && \
-    generateHeaderOnly.sh ../src/lynx19gw.dbc ../src/opendlv-standard-message-set-v0.9.7.odvd && \
+    generateHeaderOnly.sh ../src/lynx19gw.dbc ../src/lynx.odvd && \
     cp lynx19gw.hpp /tmp
 
 

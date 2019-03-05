@@ -31,16 +31,6 @@ Messege : opendlv::proxy::SwitchStateReading:
 |             |              | 3     | 1                              |
 |             |              | 7     | 1+go                           |
 
-
-
-resEStop == 0   : Emergency Stop Triggered
-
-​         == 128 : Emergency Stop NOT Triggered
-
-resQuality : quality of the connection
-
-res
-
 run the microservice:
 
 ```

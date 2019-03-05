@@ -76,26 +76,24 @@ int32_t main(int32_t argc, char **argv) {
                                 []() {});
                         std::cout << sstr.str() << std::endl;
                     }
-                    
+                            
                     opendlv::proxy::SwitchStateReading msgRESBtn;
                     msgRESBtn.state(msg.resButtons());
-                    od4.send(msgRESBtn,ts,1410);
+                    od4.send(msgRESBtn,ts,1410); // res sender stamp
 
                     opendlv::proxy::SwitchStateReading msgResQuality;
                     msgResQuality.state(msg.resQuality());
-                    od4.send(msgResQuality,ts,1409);
+                    od4.send(msgResQuality,ts,1409);// res sender stamp
 
                     opendlv::proxy::SwitchStateReading msgResEStop;
                     msgResEStop.state(msg.resEStop());
-                    od4.send(msgResEStop,ts,1408);
+                    od4.send(msgResEStop,ts,1408);// res EStop stamp
 
                     opendlv::proxy::SwitchStateReading msgResStatus;
                     msgResStatus.state(msg.resStatus());
-                    od4.send(msgResStatus,ts,1407);
+                    od4.send(msgResStatus,ts,1407);// res status stamp
                 }
             }
-
-
         };
 
 #ifdef __linux__
@@ -141,49 +139,34 @@ int32_t main(int32_t argc, char **argv) {
         return retCode;
 #endif
         
-// Encode Vehicle State
-/*
-        {
+// enbale the RES by sending a NMT control signal 
+        auto onRESinitial =[&socketCAN](cluon::data::Envelope &&env){
             lynxres19gw_nmt_node_control_t tmp;
             memset(&tmp, 0, sizeof(tmp));
             // The following msg would have to be passed to this encoder externally.
             opendlv::proxyCANWriting::NMT msg;
-            tmp.node_state = lynxres19gw_nmt_node_control_node_state_encode(msg.nodeState());
-            tmp.node_id = lynxres19gw_nmt_node_control_node_id_encode(msg.nodeId());
-            // The following statement packs the encoded values into a CAN frame.
-            int size = lynxres19gw_nmt_node_control_pack(dst, &tmp, len);
-            return size;
-        }
-*/
-/********** sample of encode *************
-        auto onTorqueRequestSetPoint =[&socketCAN](cluon::data::Envelope &&env){
-            opendlv::proxy::TorqueRequestSetPoint msg = cluon::extractMessage<opendlv::proxy::TorqueRequestSetPoint>(std::move(env));;
-            // Message to encode: LYNX19GW_AS_TORQUE_REQ_FRAME_ID
-            lynx19gw_as_torque_req_t tmp;
-            memset(&tmp, 0, sizeof(tmp));
-            // The following msg would have to be passed to this encoder externally.
-            tmp.torque_set_point_left = lynx19gw_as_torque_req_torque_set_point_left_encode(msg.torqueLeft());
-            tmp.torque_set_point_right = lynx19gw_as_torque_req_torque_set_point_right_encode(msg.torqueRight());
-            //The following statement packs the encoded values into a CAN frame.
-            std::clog << "Received msg Torque: Left: " << tmp.torque_set_point_left << " Right: "<< tmp.torque_set_point_right <<std::endl;
-            uint8_t buffer[8];
-            int len = lynx19gw_as_torque_req_pack(buffer, &tmp, 8);
-            if ( (0 < len) && (-1 < socketCAN) ) {
+            if (env.senderStamp() == 1499){ //res initial senderstamp
+                tmp.node_state = lynxres19gw_nmt_node_control_node_state_encode(1); // send 1 according to FSG Rule
+                tmp.node_id = lynxres19gw_nmt_node_control_node_id_encode(0); // send 0 according to FSGRule
+                // The following statement packs the encoded values into a CAN frame.
+                uint8_t buffer[8];
+                int len = lynxres19gw_nmt_node_control_pack(buffer, &tmp, 2);
+                if ( (0 < len) && (-1 < socketCAN) ) {
 #ifdef __linux__
-                struct can_frame frame;
-                frame.can_id = LYNX19GW_AS_TORQUE_REQ_FRAME_ID;
-                frame.can_dlc = len;
-                memcpy(frame.data, buffer, 8);
-                int32_t nbytes = ::write(socketCAN, &frame, sizeof(struct can_frame));
-                if (!(0 < nbytes)) {
-                    std::clog << "[SocketCANDevice] Writing ID = " << frame.can_id << ", LEN = " << +frame.can_dlc << ", strerror(" << errno << "): '" << strerror(errno) << "'" << std::endl;
-                }
+                    struct can_frame frame;
+                    frame.can_id = LYNXRES19GW_NMT_NODE_CONTROL_FRAME_ID;
+                    frame.can_dlc = len;
+                    memcpy(frame.data, buffer, 2);
+                    int32_t nbytes = ::write(socketCAN, &frame, sizeof(struct can_frame));
+                    if (!(0 < nbytes)) {
+                        std::clog << "[SocketCANDevice] Writing ID = " << frame.can_id << ", LEN = " << +frame.can_dlc << ", strerror(" << errno << "): '" << strerror(errno) << "'" << std::endl;
+                    }
 #endif
+                }
             }
         };
+        od4.dataTrigger(opendlv::proxy::SwitchStateReading::ID(), onRESinitial);
 
-        od4.dataTrigger(opendlv::proxy::TorqueRequestSetPoint::ID(), onTorqueRequestSetPoint);
-**************/
         struct can_frame frame;
         fd_set rfds;
         struct timeval timeout;

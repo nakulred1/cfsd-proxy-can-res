@@ -61,8 +61,8 @@ message opendlv.proxyCANWriting.NMT [id = 2007]{
 }
 
 message opendlv.proxyCANReading.RESStatus [id = 2008]{
-    uint8 resStatus [id = 1];
-    uint8 resEStop [id = 2];
-    uint8 resQuality [id = 3];
-    uint8 resButtons [id = 4]; 
+    int resStatus [id = 1];
+    int resEStop [id = 2];
+    int resQuality [id = 3];
+    int resButtons [id = 4]; 
 }

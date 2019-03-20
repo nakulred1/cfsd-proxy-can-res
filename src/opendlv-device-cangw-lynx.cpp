@@ -69,7 +69,7 @@ int32_t main(int32_t argc, char **argv) {
                     msg.resQuality(lynxres19gw_pdo_res_status_res_quality_decode(tmp.res_quality));
                     msg.resStatus(lynxres19gw_pdo_res_status_res_status_decode(tmp.res_status));
                     // The following block is automatically added to demonstrate how to display the received values.
-                    {
+                    if (VERBOSE){
                         std::stringstream sstr;
                         msg.accept([](uint32_t, const std::string &, const std::string &) {},
                                 [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
@@ -140,12 +140,15 @@ int32_t main(int32_t argc, char **argv) {
 #endif
         
 // enbale the RES by sending a NMT control signal 
-        auto onRESinitial =[&socketCAN](cluon::data::Envelope &&env){
+        auto onRESinitial =[&socketCAN,VERBOSE](cluon::data::Envelope &&env){
             lynxres19gw_nmt_node_control_t tmp;
             memset(&tmp, 0, sizeof(tmp));
             // The following msg would have to be passed to this encoder externally.
             opendlv::proxyCANWriting::NMT msg;
             if (env.senderStamp() == 1499){ //res initial senderstamp
+                if (VERBOSE){
+                    std::clog << "received res initial"<< std::endl;
+                }
                 tmp.node_state = lynxres19gw_nmt_node_control_node_state_encode(1); // send 1 according to FSG Rule
                 tmp.node_id = lynxres19gw_nmt_node_control_node_id_encode(0); // send 0 according to FSGRule
                 // The following statement packs the encoded values into a CAN frame.

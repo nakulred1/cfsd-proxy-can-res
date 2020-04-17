@@ -1,0 +1,68 @@
+/*
+ * Copyright (C) 2018 Chalmers Revere
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+message opendlv.proxyCANReading.AsStatus [id = 2001] {
+    int accSoC [id = 1];
+    int brakeRear [id = 2];
+    int brakeFront [id = 3];
+    int dlStatus [id = 4];
+    int asMission [id = 5];
+}
+
+message opendlv.proxyCANReading.WheelSpeedFront [id = 2002]{
+    float wheelFrontRight [id = 1];
+    float wheelFrontLeft [id = 2];
+}
+
+message opendlv.proxyCANReading.WheelSpeedRare [id = 2003]{
+    float wheelRareRight [id = 1];
+    float wheelRareLeft [id = 2];
+}
+
+message opendlv.proxyCANReading.PedalRatio [id = 2004]{
+    int throttle [id = 1];
+    int brake [id = 2];
+}
+
+message opendlv.proxyCANWriting.ASTorque [id = 2005]{
+    int torqueLeft [id = 1];
+    int torqueRight [id = 2];
+}
+
+message opendlv.proxyCANWriting.ASStatus [id = 2006]{
+    int asRedyToDrive [id = 1];
+    int steeringPosition [id = 2];
+    int rackPosition [id = 3];
+    int pressureService [id = 4];
+    int pressureRegulator [id = 5];
+    int pressureEBSLine [id = 6];
+    int pressureEBSAct [id = 7];
+    int asState [id = 8];
+}
+
+message opendlv.proxyCANWriting.NMT [id = 2007]{
+    uint8 nodeState [id = 1];
+    uint8 nodeId [id = 2];
+}
+
+message opendlv.proxyCANReading.RESStatus [id = 2008]{
+    int resStatus [id = 1];
+    int resEStop [id = 2];
+    int resQuality [id = 3];
+    int resButtons [id = 4]; 
+}

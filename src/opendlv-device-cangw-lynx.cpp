@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "cluon-complete.hpp"
+#include "cluon-complete.hpp
 #include "opendlv-standard-message-set.hpp"
 #include "lynxres19gw.hpp"
 
